@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 504 256">
   <style>
 path { fill: rgba(247, 193, 187, 1); }
-text { font: 80px serif; fill: #000000; }
+text { font: 60px serif; fill: #000000; }
   </style>
   <path stroke="#000000" stroke-width="4" d="M 0 0 l 50 0 l 50 50 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 -50 l 50 0 l 0 50 l 0 150 l 0 50 l -50 0 l -50 -50 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 50 l -50 0 z"></path>
   <text x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">HTTP</text>
