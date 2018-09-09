@@ -16,6 +16,7 @@ let state = 'top'
 let top, text, bottom, style
 
 lineReader.on('line', function (line) {
+  line =line.trim()
   if (line.match(/^\.\.\.\.\..*/)) {
     const piece = new Piece(top, text, bottom, style.join("\n"))
     const p = path.join(dir, fileName(text) + '.svg')
@@ -25,7 +26,7 @@ lineReader.on('line', function (line) {
     top = line
     state = 'text'
   } else if (state === 'text') {
-    text = line.trim()
+    text = line
     state = 'bottom'
   } else if (state === 'bottom') {
     bottom = line

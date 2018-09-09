@@ -53,6 +53,10 @@ module.exports = class Piece {
       first = false
     }
 
+    if(onEdge) {
+      path.push('l', '0', '50')
+    }
+    
     path.push('l', '0', '150')
     onEdge = false
 
@@ -62,7 +66,7 @@ module.exports = class Piece {
 
       switch (c) {
         case '‾':
-          if(!first && onEdge) {
+          if(onEdge) {
             path.push('l', '0', '-50')
           }
           path.push('l', '-50', '0')
