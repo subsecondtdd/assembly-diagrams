@@ -1,0 +1,17 @@
+{
+  "name": "full-stack-diagrams",
+  "version": "1.0.0",
+  "description": "Generate pieces for full-stack diagrams",
+  "main": "index.js",
+  "repository": "git@github.com:subsecondtdd/full-stack-diagrams.git",
+  "author": "Aslak Hellesøy <aslak.hellesoy@gmail.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "build": "node cli.js pieces.txt svg"
+  }
+}

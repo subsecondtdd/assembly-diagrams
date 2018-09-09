@@ -1,0 +1,48 @@
+‾‾‾‾‾‾‾‾‾‾
+   Test
+___‾‾‾‾___
+path { fill: rgba(247, 193, 187, 1); }
+text { font: 80px serif; fill: #000000; }
+..........
+___‾‾‾‾___
+ Dom Actor
+__╱╲__╱╲__
+path { fill: rgba(136, 90, 90, 1); }
+text { font: 80px serif; fill: #000000; }
+..........
+__╱╲__╱╲__
+    Dom
+‾‾╲╱‾‾╲╱‾‾
+path { fill: rgba(53, 58, 71, 1); }
+text { font: 80px serif; fill: #000000; }
+..........
+‾‾╲╱‾‾╲╱‾‾
+ React App
+__‾‾__‾‾__
+path { fill: rgba(132, 176, 130, 1); }
+text { font: 80px serif; fill: #000000; }
+..........
+__‾‾__‾‾__
+ HTTP Client
+‾╲______╱‾
+path { fill: rgba(220, 19, 108, 1); }
+text { font: 80px serif; fill: #000000; }
+..........
+‾╲______╱‾
+   HTTP
+_╱‾‾‾‾‾‾╲_
+path { fill: rgba(220, 19, 108, 1); }
+text { font: 80px serif; fill: #000000; }
+..........
+_╱‾‾‾‾‾‾╲_
+  WebApp
+__‾‾__‾‾__
+path { fill: rgba(220, 19, 108, 1); }
+text { font: 80px serif; fill: #000000; }
+..........
+__‾‾__‾‾__
+ Domain Logic
+__________
+path { fill: rgba(220, 19, 108, 1); }
+text { font: 80px serif; fill: #000000; }
+..........

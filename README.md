@@ -1,15 +1,14 @@
 # Full-Stack Diagrams
 
-Create diagrams for sub-second full-stack acceptance tests.
+Generate SVGs for pieces that can be used to create full-stack diagrams for 
+sub-second acceptance tests.
 
-## Build
+## Edit and build SVGs pieces
 
-    brew install potrace
-    brew install imagemagick
-    make
+The pieces are defined in `pieces.txt`. Rebuild the `./svg/*.svg` files:
 
-## Edit images
+    yarn build
 
-The originals are in the `src/` directory. These images are exports from
-[Tayasui Sketches](http://tayasui.com/sketches/) - drawn by hand on Aslak's
-iPad Pro. If you want new images, create a new GitHub issue.
+## Pieces
+
+![dom_actor](src/dom_actor.svg)
