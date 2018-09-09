@@ -1,7 +1,8 @@
 # Full-Stack Diagrams
 
-Generate SVGs for pieces that can be used to create full-stack diagrams for 
-sub-second acceptance tests.
+A Full-Stack Diagram visualises how a test suite (as well as the system under test) 
+is assembled. When a test suite and the system under test defines clear contracts
+between components, different assemblies can be constructed:
 
 | `------Full Stack------`                     | `------DOM-Domain------`              | `--------Domain--------`              | `-----HTTP-Domain------`              |
 | -------------------------------------------- | ------------------------------------- | ------------------------------------- | --------------------------------------|
@@ -17,33 +18,37 @@ sub-second acceptance tests.
 
 (There are more possibilities, such as `DOM-HTTP-Domain`)
 
-The purpose of these diagrams is to visualise and explain how a test suite
-(as well as the system under test) can be assembled in different configurations,
-reusing the same acceptance tests.
-
-The different assemblies make tradeoffs between test speed and test confidence.
+These different assemblies make tradeoffs between test *speed* and test *confidence*.
 
 The idea is to have more of the fast tests and fewer of the slow ones -
 as few as you can get away with.
 
 The *Dom-Domain* tests exercise most of the functional parts of the stack, yet they 
-typically run in a few milliseconds. This is because all I/O has been removed. 
-CPU-heavy components (such as a visual browser) have also been removed.
+typically run in a few milliseconds. This is because there is no I/O in the assembly. 
+CPU-heavy components (such as a visual browser) are not present.
 
-The only components these tests don't give us confidence about are the ones that 
-are removed. We therefore have a *Full Stack* assembly that connects all the pieces
-(similar to the production environment), and we occasionally run a few tests with 
-this assembly, for maximum confidence.
+These tests obviously don't provide any confidence about components that are not present. 
+The *Full Stack* assembly connects all the components in a similar way to the production environment.
+Tests in this assembly can be run occasionally, for maximum confidence.
 
 The extremely fast acceptance tests enable high productivity, as developers can
 get near-instant feedback on their changes. The slower, really thorough
 ones have a different purpose - to verify that everything works before a commit,
 and for more thorough CI tests.
 
-## Edit and build SVGs pieces
+## Edit and build your own SVGs
 
-The pieces are defined in `pieces.txt`. You can fork this repo, edit the pieces and
-rebuild the `./svg/*.svg` files:
+The pieces are defined in `pieces.txt`. It consists of multiple pieces like this:
+
+```
+‾‾╲╱‾‾╲╱‾‾
+ React App
+__‾‾__‾‾__
+path { fill: rgba(132, 176, 130, 1); }
+text { font: 60px serif; fill: #000000; }
+```
+
+You can fork this repo, edit `pieces.txt` and rebuild the `./svg/*.svg` files:
 
     yarn build
 
