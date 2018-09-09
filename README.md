@@ -9,7 +9,7 @@ sub-second acceptance tests.
 | ![webdriver_actor](svg/webdriver_actor.svg)  | ![dom_actor](svg/dom_actor.svg)       |
 | ![browser](svg/browser.svg)                  | ![dom](svg/dom.svg)                   |
 | ![dom](svg/dom.svg)                          | ![react_app](svg/react_app.svg)       |
-| ![react_app](svg/react_app.svg)              | ![domain_logic](svg/domain_logic.svg  |
+| ![react_app](svg/react_app.svg)              | ![domain_logic](svg/domain_logic.svg) |
 | ![http_client](svg/http_client.svg)          |                                       |
 | ![http](svg/http.svg)                        |                                       |
 | ![webapp](svg/webapp.svg)                    |                                       |
