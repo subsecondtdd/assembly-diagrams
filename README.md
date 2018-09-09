@@ -11,4 +11,4 @@ The pieces are defined in `pieces.txt`. Rebuild the `./svg/*.svg` files:
 
 ## Pieces
 
-![dom_actor](src/dom_actor.svg)
+![dom_actor](svg/dom_actor.svg)
