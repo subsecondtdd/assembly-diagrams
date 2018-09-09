@@ -3,7 +3,7 @@
 Generate SVGs for pieces that can be used to create full-stack diagrams for 
 sub-second acceptance tests.
 
-| `Full Stack          `                       | `DOM-Domain          `                | `Domain`                              | `HTTP-Domain`                         |
+| ------Full Stack------                       | ------DOM-Domain------                | --------Domain--------                | -----HTTP-Domain------                |
 | -------------------------------------------- | ------------------------------------- | ------------------------------------- | --------------------------------------|
 | ![test](svg/test.svg)                        | ![test](svg/test.svg)                 | ![test](svg/test.svg)                 | ![test](svg/test.svg)                 |
 | ![webdriver_actor](svg/webdriver_actor.svg)  | ![dom_actor](svg/dom_actor.svg)       | ![test](svg/direct_actor.svg)         | ![test](svg/direct_actor.svg)         |
@@ -42,16 +42,20 @@ and for more thorough CI tests.
 
 ## Edit and build SVGs pieces
 
-The pieces are defined in `pieces.txt`. Rebuild the `./svg/*.svg` files:
+The pieces are defined in `pieces.txt`. You can fork this repo, edit the pieces and
+rebuild the `./svg/*.svg` files:
 
     yarn build
 
 ## Conventions
 
-To make it easier to distinguish between different types of components,
-they are grouped in 4 categories (with separate colours):
+Components are grouped in the follow categories:
 
 * test - green
 * infrastructure - pink
 * frontend - orange
 * backend - light blue
+
+This makes it easier to distinguish between different types of components.
+It also makes it easier to quickly spot what's essential about an assembly
+(fast/slow, with/without infrastructure).
