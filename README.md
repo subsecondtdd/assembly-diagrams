@@ -3,7 +3,7 @@
 Generate SVGs for pieces that can be used to create full-stack diagrams for 
 sub-second acceptance tests.
 
-| Full Stack                                   | DOM-Domain                            |
+| `Full Stack          `                       | `DOM-Domain          `                |
 | -------------------------------------------- | ------------------------------------- |
 | ![test](svg/test.svg)                        | ![test](svg/test.svg)                 |
 | ![webdriver_actor](svg/webdriver_actor.svg)  | ![dom_actor](svg/dom_actor.svg)       |
