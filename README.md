@@ -3,17 +3,17 @@
 Generate SVGs for pieces that can be used to create full-stack diagrams for 
 sub-second acceptance tests.
 
-| `Full Stack          `                       | `DOM-Domain          `                |
-| -------------------------------------------- | ------------------------------------- |
-| ![test](svg/test.svg)                        | ![test](svg/test.svg)                 |
-| ![webdriver_actor](svg/webdriver_actor.svg)  | ![dom_actor](svg/dom_actor.svg)       |
-| ![browser](svg/browser.svg)                  | ![dom](svg/dom.svg)                   |
-| ![dom](svg/dom.svg)                          | ![react_app](svg/react_app.svg)       |
-| ![react_app](svg/react_app.svg)              | ![domain_logic](svg/domain_logic.svg) |
-| ![http_client](svg/http_client.svg)          |                                       |
-| ![http](svg/http.svg)                        |                                       |
-| ![webapp](svg/webapp.svg)                    |                                       |
-| ![domain_logic](svg/domain_logic.svg)        |                                       |
+| `Full Stack          `                       | `DOM-Domain          `                | `Domain`                              |
+| -------------------------------------------- | ------------------------------------- | ------------------------------------- |
+| ![test](svg/test.svg)                        | ![test](svg/test.svg)                 | ![test](svg/test.svg)                 |
+| ![webdriver_actor](svg/webdriver_actor.svg)  | ![dom_actor](svg/dom_actor.svg)       | ![test](svg/direct_actor.svg)         | 
+| ![browser](svg/browser.svg)                  | ![dom](svg/dom.svg)                   | ![domain_logic](svg/domain_logic.svg) |
+| ![dom](svg/dom.svg)                          | ![react_app](svg/react_app.svg)       |                                       |
+| ![react_app](svg/react_app.svg)              | ![domain_logic](svg/domain_logic.svg) |                                       |
+| ![http_client](svg/http_client.svg)          |                                       |                                       |
+| ![http](svg/http.svg)                        |                                       |                                       |
+| ![webapp](svg/webapp.svg)                    |                                       |                                       |
+| ![domain_logic](svg/domain_logic.svg)        |                                       |                                       |
 
 
 The purpose of these diagrams is to visualise and explain how a test suite
@@ -44,3 +44,13 @@ and for more thorough CI tests.
 The pieces are defined in `pieces.txt`. Rebuild the `./svg/*.svg` files:
 
     yarn build
+
+## Conventions
+
+To make it easier to distinguish between different types of components,
+they are grouped in 4 categories (with separate colours):
+
+* test - green
+* infrastructure - pink
+* frontend - orange
+* backend - light blue

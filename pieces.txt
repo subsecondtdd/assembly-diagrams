@@ -17,6 +17,12 @@ path { fill: rgba(53, 58, 71, 1); }
 text { font: 60px serif; fill: #000000; }
 ..........
 ___‾‾‾‾___
+ Direct Actor
+__‾‾__‾‾__
+path { fill: rgba(136, 90, 90, 1); }
+text { font: 60px serif; fill: #000000; }
+..........
+___‾‾‾‾___
  Dom Actor
 __╱╲__╱╲__
 path { fill: rgba(136, 90, 90, 1); }
