@@ -1,8 +1,12 @@
-# Full-Stack Diagrams
+# Assembly Diagrams
 
-A Full-Stack Diagram visualises how a test suite (as well as the system under test) 
-is assembled. When a test suite and the system under test defines clear contracts
-between components, different assemblies can be constructed:
+An Assembly is a collection of components, arranged in a particular way.
+Assembly diagrams visualise how components are assembled.
+
+We are interested in test components as well as application components.
+
+Components can be decoupled via contracts. This makes it possible to create a wide
+range of assemblies:
 
 | `------Full Stack------`                     | `------DOM-Domain------`              | `--------Domain--------`              | `-----HTTP-Domain------`              |
 | -------------------------------------------- | ------------------------------------- | ------------------------------------- | --------------------------------------|
