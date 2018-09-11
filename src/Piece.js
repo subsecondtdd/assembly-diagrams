@@ -1,9 +1,10 @@
 module.exports = class Piece {
-  constructor(top, text, bottom, style) {
+  constructor(top, text, bottom, style, globalStyle) {
     this._top = top;
     this._text = text;
     this._bottom = bottom;
     this._style = style;
+    this._globalStyle = globalStyle;
   }
 
   toPath() {
@@ -56,7 +57,7 @@ module.exports = class Piece {
     if(onEdge) {
       path.push('l', '0', '50')
     }
-    
+
     path.push('l', '0', '150')
     onEdge = false
 
@@ -93,17 +94,20 @@ module.exports = class Piece {
     path.push('z')
     return path.join(' ')
   }
-  
+
   toText() {
     return `<text x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">${escapeHtml(this._text)}</text>`
   }
-  
+
   toSvg() {
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 504 256">
-  <style>
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 504 256" width="506" height="258">
+  <defs>
+    <style type="text/css"><![CDATA[
 ${this._style}
-  </style>
-  <path stroke="#000000" stroke-width="4" d="${this.toPath()}"></path>
+${this._globalStyle}
+    ]]></style>
+  </defs>
+  <path stroke="#000000" stroke-width="4" d="${this.toPath()}" />
   ${this.toText()}
 </svg>
 `

@@ -8,10 +8,11 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "mkdirp": "^0.5.1",
     "mocha": "^5.2.0"
   },
   "scripts": {
     "test": "mocha",
-    "build": "node cli.js pieces.txt svg"
+    "build": "node cli.js pieces.txt images/svg"
   }
 }

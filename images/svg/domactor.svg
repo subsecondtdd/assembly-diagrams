@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 504 256" width="506" height="258">
+  <defs>
+    <style type="text/css"><![CDATA[
+path { fill: #7fb069; }
+text {
+  font-size: 60px;
+  font-family: sans-serif;
+  fill: #000000;
+}
+
+    ]]></style>
+  </defs>
+  <path stroke="#000000" stroke-width="4" d="M 0 50 l 50 0 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 50 0 l 0 150 l 0 50 l -50 0 l -50 0 l -50 -50 l -50 50 l -50 0 l -50 0 l -50 -50 l -50 50 l -50 0 l -50 0 z" />
+  <text x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">DomActor</text>
+</svg>

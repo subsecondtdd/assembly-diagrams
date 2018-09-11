@@ -1,24 +1,24 @@
 # Assembly Diagrams
 
-An Assembly is a collection of components, arranged in a particular way.
-Assembly diagrams visualise how components are assembled.
+An Assembly is a collection of components that are connected in a particular way.
+An Assembly diagram is a visualisation of an assembly.
 
-We are interested in test components as well as application components.
+Assembly diagrams visualise test components as well as application components.
 
 Components can be decoupled via contracts. This makes it possible to create a wide
 range of assemblies:
 
-| `------Full Stack------`                     | `------DOM-Domain------`              | `--------Domain--------`              | `-----HTTP-Domain------`              |
-| -------------------------------------------- | ------------------------------------- | ------------------------------------- | --------------------------------------|
-| ![test](svg/test.svg)                        | ![test](svg/test.svg)                 | ![test](svg/test.svg)                 | ![test](svg/test.svg)                 |
-| ![webdriver_actor](svg/webdriver_actor.svg)  | ![dom_actor](svg/dom_actor.svg)       | ![test](svg/direct_actor.svg)         | ![test](svg/direct_actor.svg)         |
-| ![browser](svg/browser.svg)                  | ![dom](svg/dom.svg)                   | ![domain_logic](svg/domain_logic.svg) | ![http_client](svg/http_client.svg)   |
-| ![dom](svg/dom.svg)                          | ![react_app](svg/react_app.svg)       |                                       | ![http](svg/http.svg)                 |
-| ![react_app](svg/react_app.svg)              | ![domain_logic](svg/domain_logic.svg) |                                       | ![webapp](svg/webapp.svg)             |
-| ![http_client](svg/http_client.svg)          |                                       |                                       | ![domain_logic](svg/domain_logic.svg) | 
-| ![http](svg/http.svg)                        |                                       |                                       |                                       |
-| ![webapp](svg/webapp.svg)                    |                                       |                                       |                                       |
-| ![domain_logic](svg/domain_logic.svg)        |                                       |                                       |                                       |
+| `------Full Stack------`                            | `------DOM-Domain------`                     | `--------Domain--------`                     | `-----HTTP-Domain------`                     |
+| --------------------------------------------------- | -------------------------------------------- | -------------------------------------------- | ---------------------------------------------|
+| ![test](images/svg/test.svg)                        | ![test](images/svg/test.svg)                 | ![test](images/svg/test.svg)                 | ![test](images/svg/test.svg)                 |
+| ![webdriveractor](images/svg/webdriveractor.svg)    | ![domactor](images/svg/domactor.svg)         | ![test](images/svg/directactor.svg)          | ![test](images/svg/directactor.svg)          |
+| ![browser](images/svg/browser.svg)                  | ![dom](images/svg/dom.svg)                   | ![domainlogic](images/svg/domainlogic.svg)   | ![httpclient](images/svg/httpclient.svg)     |
+| ![dom](images/svg/dom.svg)                          | ![reactapp](images/svg/reactapp.svg)         |                                              | ![http](images/svg/http.svg)                 |
+| ![reactapp](images/svg/reactapp.svg)                | ![domainlogic](images/svg/domainlogic.svg)   |                                              | ![webapp](images/svg/webapp.svg)             |
+| ![httpclient](images/svg/httpclient.svg)            |                                              |                                              | ![domainlogic](images/svg/domainlogic.svg)   |
+| ![http](images/svg/http.svg)                        |                                              |                                              |                                              |
+| ![webapp](images/svg/webapp.svg)                    |                                              |                                              |                                              |
+| ![domainlogic](images/svg/domainlogic.svg)          |                                              |                                              |                                              |
 
 (There are more possibilities, such as `DOM-HTTP-Domain`)
 
@@ -27,11 +27,11 @@ These different assemblies make tradeoffs between test *speed* and test *confide
 The idea is to have more of the fast tests and fewer of the slow ones -
 as few as you can get away with.
 
-The *Dom-Domain* tests exercise most of the functional parts of the stack, yet they 
-typically run in a few milliseconds. This is because there is no I/O in the assembly. 
+The *Dom-Domain* tests exercise most of the functional parts of the stack, yet they
+typically run in a few milliseconds. This is because there is no I/O in the assembly.
 CPU-heavy components (such as a visual browser) are not present.
 
-These tests obviously don't provide any confidence about components that are not present. 
+These tests obviously don't provide any confidence about components that are not present.
 The *Full Stack* assembly connects all the components in a similar way to the production environment.
 Tests in this assembly can be run occasionally, for maximum confidence.
 
@@ -55,6 +55,15 @@ text { font: 60px serif; fill: #000000; }
 You can fork this repo, edit `pieces.txt` and rebuild the `./svg/*.svg` files:
 
     yarn build
+
+## Build PNGs from SVGs
+
+Once you have generated the `images/svg/*.svg` files, you can generate `images/png/*.png`
+from them. This is useful for environments that don't support SVG.
+
+    brew install python3
+    pip3 install cairosvg lxml tinycss cssselect
+    make
 
 ## Conventions
 
