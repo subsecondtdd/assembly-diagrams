@@ -8,17 +8,17 @@ Assembly diagrams visualise test components as well as application components.
 Components can be decoupled via contracts. This makes it possible to create a wide
 range of assemblies:
 
-| `------Full Stack------`                            | `------DOM-Domain------`                     | `--------Domain--------`                     | `-----HTTP-Domain------`                     |
-| --------------------------------------------------- | -------------------------------------------- | -------------------------------------------- | ---------------------------------------------|
-| ![test](images/svg/test.svg)                        | ![test](images/svg/test.svg)                 | ![test](images/svg/test.svg)                 | ![test](images/svg/test.svg)                 |
-| ![webdriveractor](images/svg/webdriveractor.svg)    | ![domactor](images/svg/domactor.svg)         | ![test](images/svg/directactor.svg)          | ![test](images/svg/directactor.svg)          |
-| ![browser](images/svg/browser.svg)                  | ![dom](images/svg/dom.svg)                   | ![domainlogic](images/svg/domainlogic.svg)   | ![httpclient](images/svg/httpclient.svg)     |
-| ![dom](images/svg/dom.svg)                          | ![reactapp](images/svg/reactapp.svg)         |                                              | ![http](images/svg/http.svg)                 |
-| ![reactapp](images/svg/reactapp.svg)                | ![domainlogic](images/svg/domainlogic.svg)   |                                              | ![webapp](images/svg/webapp.svg)             |
-| ![httpclient](images/svg/httpclient.svg)            |                                              |                                              | ![domainlogic](images/svg/domainlogic.svg)   |
-| ![http](images/svg/http.svg)                        |                                              |                                              |                                              |
-| ![webapp](images/svg/webapp.svg)                    |                                              |                                              |                                              |
-| ![domainlogic](images/svg/domainlogic.svg)          |                                              |                                              |                                              |
+| `------Full Stack------`                            | `------DOM-Domain------`                     | `--------Domain--------`                     | `-----HTTP-Domain------`                      |
+| --------------------------------------------------- | -------------------------------------------- | -------------------------------------------- | ----------------------------------------------|
+| ![test](images/svg/test.svg)                        | ![test](images/svg/test.svg)                 | ![test](images/svg/test.svg)                 | ![test](images/svg/test.svg)                  |
+| ![webdriveractor](images/svg/webdriveractor.svg)    | ![domactor](images/svg/domactor.svg)         | ![test](images/svg/directactor.svg)          | ![test](images/svg/directactor.svg)           |
+| ![browser](images/svg/browser.svg)                  | ![dom](images/svg/dom.svg)                   | ![domainlogic](images/svg/domainlogic.svg)   | ![httpapiclient](images/svg/httpapiclient.svg)|
+| ![dom](images/svg/dom.svg)                          | ![reactapp](images/svg/reactapp.svg)         |                                              | ![http](images/svg/http.svg)                  |
+| ![reactapp](images/svg/reactapp.svg)                | ![domainlogic](images/svg/domainlogic.svg)   |                                              | ![httpapi](images/svg/httpapi.svg)            |
+| ![httpapiclient](images/svg/httpapiclient.svg)      |                                              |                                              | ![domainlogic](images/svg/domainlogic.svg)    |
+| ![http](images/svg/http.svg)                        |                                              |                                              |                                               |
+| ![httpapi](images/svg/httpapi.svg)                  |                                              |                                              |                                               |
+| ![domainlogic](images/svg/domainlogic.svg)          |                                              |                                              |                                               |
 
 (There are more possibilities, such as `DOM-HTTP-Domain`)
 

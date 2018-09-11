@@ -7,3 +7,7 @@ pngs: $(PNGS)
 images/png/%.png: images/svg/%.svg
 	mkdir -p $$(dirname "$@")
 	cairosvg --scale 0.4 $< -o $@
+
+clean:
+	rm -rf images
+.PHONY: clean
