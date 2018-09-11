@@ -8,7 +8,7 @@ Assembly diagrams visualise test components as well as application components.
 Components can be decoupled via contracts. This makes it possible to create a wide
 range of assemblies:
 
-| `------Full Stack------`                            | `------DOM-Domain------`                     | `--------Domain--------`                     | `-----HTTP-Domain------`                      |
+| `-----Full Stack-----`                              | `-----DOM-Domain-----`                       | `-------Domain-------`                       | `----HTTP-Domain-----`                        |
 | --------------------------------------------------- | -------------------------------------------- | -------------------------------------------- | ----------------------------------------------|
 | ![test](images/svg/test.svg)                        | ![test](images/svg/test.svg)                 | ![test](images/svg/test.svg)                 | ![test](images/svg/test.svg)                  |
 | ![webdriveractor](images/svg/webdriveractor.svg)    | ![domactor](images/svg/domactor.svg)         | ![test](images/svg/directactor.svg)          | ![test](images/svg/directactor.svg)           |
