@@ -10,6 +10,6 @@ text {
 
     ]]></style>
   </defs>
-  <path stroke="#000000" stroke-width="4" d="M 0 50 l 50 0 l 50 -50 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 50 l 50 0 l 0 150 l 0 50 l -50 0 l -50 0 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l -50 0 l -50 0 z" />
+  <path stroke="#000000" stroke-width="4" d="M 0 50 l 50 0 l 50 -50 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 50 l 50 0 l 0 150 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 z" />
   <text x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">HttpApi</text>
 </svg>
