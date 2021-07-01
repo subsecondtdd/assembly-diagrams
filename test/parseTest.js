@@ -3,9 +3,9 @@ const parse = require('../src/parse')
 const assert = require("assert")
 
 describe('parse', () => {
-  it('generates an array of pieces', () => {
-    const pieces = parse(fs.readFileSync(`${__dirname}/../assemblies/webdriver-full-stack.txt`, 'utf-8'))
-    assert.deepStrictEqual(pieces.map(piece => piece.toJSON()), [
+  it('generates an array of components', () => {
+    const components = parse(fs.readFileSync(`${__dirname}/../assemblies/webdriver-full-stack.txt`, 'utf-8'))
+    assert.deepStrictEqual(components.map(component => component.toJSON()), [
       {
         top: '‾‾‾‾‾‾‾‾‾‾',
         text: 'Actor',
@@ -16,49 +16,49 @@ describe('parse', () => {
         top: '___‾‾‾‾___',
         text: 'WebDriverInteraction',
         bottom: '__╱╲╱╲╱╲__',
-        className: 'browser',
+        className: 'test',
       },
       {
         top: '__╱╲╱╲╱╲__',
         text: 'Browser',
         bottom: '__╱╲__╱╲__',
-        className: 'browser',
+        className: 'infrastructure',
       },
       {
         top: '__╱╲__╱╲__',
         text: 'DOM',
         bottom: '‾‾╲╱‾‾╲╱‾‾',
-        className: 'dom',
+        className: 'infrastructure',
       },
       {
         top: '‾‾╲╱‾‾╲╱‾‾',
         text: 'ReactApp',
         bottom: '__‾‾__‾‾__',
-        className: 'dom',
+        className: 'production',
       },
       {
         top: '__‾‾__‾‾__',
-        text: 'HttpApiClient',
+        text: 'HttpSession',
         bottom: '‾‾__‾‾__‾‾',
-        className: 'http',
+        className: 'production',
       },
       {
         top: '‾‾__‾‾__‾‾',
         text: 'Network',
         bottom: '__‾‾__‾‾__',
-        className: 'http',
+        className: 'infrastructure',
       },
       {
         top: '__‾‾__‾‾__',
         text: 'ExpressApp',
         bottom: '_‾_‾__‾_‾_',
-        className: 'http',
+        className: 'production',
       },
       {
         top: '_‾_‾__‾_‾_',
         text: 'DomainLogic',
         bottom: '__________',
-        className: 'domain',
+        className: 'production',
       },
     ])
   })

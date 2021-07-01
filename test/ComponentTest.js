@@ -1,13 +1,13 @@
 const assert = require('assert')
-const Piece = require('../src/Piece')
+const Component = require('../src/Component')
 
 function p(strings) {
   return strings.join(' ').trim().split(/\s+/g).join(' ')
 }
 
-describe('Piece', () => {
+describe('Component', () => {
   it('generates d for <path>', () => {
-    const piece = new Piece(
+    const component = new Component(
       '__‾‾__‾‾__',
       null,
       '‾╲______╱‾'
@@ -46,28 +46,28 @@ describe('Piece', () => {
       z
     `
 
-    assert.deepStrictEqual(piece.toD(), expected)
+    assert.deepStrictEqual(component.toD(), expected)
   })
 
   it('generates escaped text', () => {
-    const piece = new Piece(
+    const component = new Component(
       null,
       '<HTTPClient>',
       null
     )
 
-    assert.deepStrictEqual(piece.toText(), '<text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">&lt;HTTPClient&gt;</text>')
+    assert.deepStrictEqual(component.toText(), '<text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">&lt;HTTPClient&gt;</text>')
   })
 
   it('generates g', () => {
-    const piece = new Piece(
+    const component = new Component(
       '__‾‾__‾‾__',
       'HTTPClient',
       '‾╲______╱‾',
       'http'
     )
 
-    const g = piece.toG({transform: 'translate(0 200)'}).split('\n')[0].trim()
+    const g = component.toG({transform: 'translate(0 200)'}).split('\n')[0].trim()
     assert.strictEqual(g, '<g transform="translate(0 200)" class="http">')
   })
 })

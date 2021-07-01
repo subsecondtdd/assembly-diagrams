@@ -1,7 +1,7 @@
 {
   "name": "full-stack-diagrams",
   "version": "1.0.0",
-  "description": "Generate pieces for full-stack diagrams",
+  "description": "Generate components for full-stack diagrams",
   "main": "cli.js",
   "repository": "git@github.com:subsecondtdd/full-stack-diagrams.git",
   "author": "Aslak Hellesøy <aslak.hellesoy@gmail.com>",

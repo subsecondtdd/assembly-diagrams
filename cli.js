@@ -8,8 +8,8 @@ const Assembly = require('./src/Assembly')
 
 async function main(assemblyPath, cssPath, writable) {
   const assemblyScript = await toString(fs.createReadStream(assemblyPath))
-  const pieces = parse(assemblyScript)
-  const assembly = new Assembly(pieces)
+  const components = parse(assemblyScript)
+  const assembly = new Assembly(components)
   const css = cssPath ? await toString(fs.createReadStream(cssPath)) : undefined
   const svg = assembly.toSvg(css)
   writable.write(svg)

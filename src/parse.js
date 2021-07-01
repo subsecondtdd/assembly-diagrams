@@ -1,11 +1,11 @@
-const Piece = require('./Piece')
+const Component = require('./Component')
 
 module.exports = function parse(assemblyScript) {
   let previousEdge = undefined
   let previousClassName = undefined
   let text = undefined
 
-  const pieces = []
+  const components = []
 
   const lines = assemblyScript.split(/\n/)
   lines.forEach((line, i) => {
@@ -16,8 +16,8 @@ module.exports = function parse(assemblyScript) {
       case 0: {
         const [edge, className] = line.split('.')
         if(previousEdge) {
-          const piece = new Piece(previousEdge, text, edge, previousClassName)
-          pieces.push(piece)
+          const component = new Component(previousEdge, text, edge, previousClassName)
+          components.push(component)
         }
         previousEdge = edge
         previousClassName = className
@@ -30,5 +30,5 @@ module.exports = function parse(assemblyScript) {
     }
   })
 
-  return pieces
+  return components
 }

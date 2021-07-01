@@ -1,4 +1,4 @@
-module.exports = class Piece {
+module.exports = class Component {
   constructor(top, text, bottom, className) {
     this.top = top;
     this.text = text;
