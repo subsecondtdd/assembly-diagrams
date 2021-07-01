@@ -98,7 +98,7 @@ module.exports = class Piece {
   }
 
   toText() {
-    return `<text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">${escapeHtml(this.text)}</text>`
+    return `<text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">${escapeHtml(this.text)}</text>`
   }
 
   toPath() {

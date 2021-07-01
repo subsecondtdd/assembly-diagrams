@@ -13,7 +13,7 @@ images/svg/%.svg: assemblies/%.txt src/assembly.css
 
 images/png/%.png: images/svg/%.svg
 	mkdir -p $(@D)
-	cairosvg --scale 0.4 $< -o $@
+	cairosvg $< -o $@
 
 clean:
 	rm -rf images

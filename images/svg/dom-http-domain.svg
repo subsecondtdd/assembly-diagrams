@@ -33,34 +33,34 @@ https://davidmathlogic.com/colorblind/#%23648FFF-%23785EF0-%23DC267F-%23FE6100-%
   </defs>
   <g transform="translate(0, 0)" class="test">
     <path stroke="#000000" stroke-width="4" d="M 0 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 50 0 l 0 50 l 0 150 l 0 50 l -50 0 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l -50 0 z" />
-    <text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">Actor</text>
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">Actor</text>
   </g>
   <g transform="translate(0, 200)" class="test">
     <path stroke="#000000" stroke-width="4" d="M 0 50 l 50 0 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 50 0 l 0 150 l 0 50 l -50 0 l -50 0 l -50 -50 l -50 50 l -50 0 l -50 0 l -50 -50 l -50 50 l -50 0 l -50 0 z" />
-    <text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">DomInteraction</text>
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">DomInteraction</text>
   </g>
   <g transform="translate(0, 400)" class="infrastructure">
     <path stroke="#000000" stroke-width="4" d="M 0 50 l 50 0 l 50 0 l 50 -50 l 50 50 l 50 0 l 50 0 l 50 -50 l 50 50 l 50 0 l 50 0 l 0 150 l -50 0 l -50 0 l -50 50 l -50 -50 l -50 0 l -50 0 l -50 50 l -50 -50 l -50 0 l -50 0 z" />
-    <text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">DOM</text>
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">DOM</text>
   </g>
   <g transform="translate(0, 600)" class="production">
     <path stroke="#000000" stroke-width="4" d="M 0 0 l 50 0 l 50 0 l 50 50 l 50 -50 l 50 0 l 50 0 l 50 50 l 50 -50 l 50 0 l 50 0 l 0 50 l 0 150 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 z" />
-    <text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">ReactApp</text>
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">ReactApp</text>
   </g>
   <g transform="translate(0, 800)" class="production">
     <path stroke="#000000" stroke-width="4" d="M 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 150 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 z" />
-    <text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">HttpSession</text>
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">HttpSession</text>
   </g>
   <g transform="translate(0, 1000)" class="infrastructure">
     <path stroke="#000000" stroke-width="4" d="M 0 0 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 0 150 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l -50 0 l 0 50 l -50 0 l -50 0 z" />
-    <text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">Network</text>
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">Network</text>
   </g>
   <g transform="translate(0, 1200)" class="production">
     <path stroke="#000000" stroke-width="4" d="M 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 50 0 l 0 50 l 50 0 l 50 0 l 0 150 l 0 50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 l 0 -50 l -50 0 l 0 50 l -50 0 z" />
-    <text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">ExpressApp</text>
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">ExpressApp</text>
   </g>
   <g transform="translate(0, 1400)" class="production">
     <path stroke="#000000" stroke-width="4" d="M 0 50 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 0 -50 l 50 0 l 0 50 l 50 0 l 0 150 l 0 50 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 l -50 0 z" />
-    <text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">DomainLogic</text>
+    <text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">DomainLogic</text>
   </g>
 </svg>
