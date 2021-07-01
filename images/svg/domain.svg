@@ -12,16 +12,21 @@ path {
   stroke-width: 6px;
 }
 
+/*
+IBM palette for colour-blind people
+https://davidmathlogic.com/colorblind/#%23648FFF-%23785EF0-%23DC267F-%23FE6100-%23FFB000
+*/
+
 .test {
-  fill: #7fb069;
+  fill: #FFB000;
 }
 
 .infrastructure {
-  fill: #e09195;
+  fill: #DC267F;
 }
 
 .production {
-  fill: #06bee1;
+  fill: #648FFF;
 }
 
     ]]></style>
