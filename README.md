@@ -1,7 +1,12 @@
 # Assembly Diagrams
 
-An *Assembly Diagram* is a visualisation of a *Component Assembly*.
-A *Component Assembly is a set of components that are connected (stacked) in a particular way.
+An *Assembly Diagram* is a visualisation of a *Component Assembly*, and
+a *Component Assembly* is a set of components that are connected (stacked) in a particular way.
+
+Assembly Diagrams are useful for understanding and designing full-stack automated test suites
+that can run in milliseconds:
+
+[![Watch the video](https://img.youtube.com/vi/AJ7u_Z-TS-A/hq3.jpg)](https://www.youtube.com/watch?v=AJ7u_Z-TS-A)
 
 Assembly Diagrams typically visualise three kinds of components:
 
@@ -9,20 +14,20 @@ Assembly Diagrams typically visualise three kinds of components:
 * ![#DC267F](https://via.placeholder.com/15/DC267F/000000?text=+) Infrastructure components
 * ![#648FFF](https://via.placeholder.com/15/648FFF/000000?text=+) Production components
 
-You can think of a component as a "lego brick" with three characteristics:
+You can think of each component as a "lego brick" with three characteristics:
 
-* The top is the *contract* it implements (the **interface**)
-* The middle is *how* the component fulfills the contract (the **implementation**)
-* The bottom is the contract it *needs* (the **dependency**)
+* The top [studs](https://www.brothers-brick.com/lego-glossary/#Stud) of the brick represent the component's *contract* (the **interface** it implements)
+* The brick itself is *how* the component fulfils the contract (its **implementation**)
+* The bottom [anti-studs](https://www.brothers-brick.com/lego-glossary/#Anti-stud) is the contract the component *needs* (its **dependency**)
 
 There can be multiple implementations of the same interface. This makes it possible to create a wide
-range of assemblies:
+range of *Component Assemblies*. If you've ever played with lego you know this.
 
 | Full Stack                                   | DOM-HTTP-Domain                         | DOM-Domain                         | HTTP-Domain                         | Domain                              |
 | ---------------------------------------------| --------------------------------------- | ---------------------------------- | ----------------------------------- | ----------------------------------- |
-| ![test](images/svg/webdriver-full-stack.svg) | ![test](images/svg/dom-http-domain.svg) | ![test](images/svg/dom-domain.svg) | ![test](images/svg/http-domain.svg) | ![test](images/svg/domain.svg) |
+| ![test](images/png/webdriver-full-stack.png) | ![test](images/png/dom-http-domain.png) | ![test](images/png/dom-domain.png) | ![test](images/png/http-domain.png) | ![test](images/png/domain.png) |
 
-These different assemblies make tradeoffs between three important aspects of automated tests:
+Each of these assemblies make tradeoffs between three important aspects of automated tests:
 
 * Speed
 * Confidence (how much is tested)
