@@ -1,0 +1,27 @@
+text {
+  font-size: 40px;
+  font-family: sans-serif;
+  fill: #000000;
+}
+
+path {
+  stroke: #000000;
+  stroke-width: 6px;
+}
+
+/*
+IBM palette for colour-blind people
+https://davidmathlogic.com/colorblind/#%23648FFF-%23785EF0-%23DC267F-%23FE6100-%23FFB000
+*/
+
+.test {
+  fill: #FFB000;
+}
+
+.infrastructure {
+  fill: #DC267F;
+}
+
+.production {
+  fill: #648FFF;
+}

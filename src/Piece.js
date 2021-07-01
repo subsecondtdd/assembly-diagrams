@@ -1,24 +1,27 @@
 module.exports = class Piece {
-  constructor(top, text, bottom, style, globalStyle) {
-    this._top = top;
-    this._text = text;
-    this._bottom = bottom;
-    this._style = style;
-    this._globalStyle = globalStyle;
+  constructor(top, text, bottom, className) {
+    this.top = top;
+    this.text = text;
+    this.bottom = bottom;
+    this.className = className;
   }
 
-  toPath() {
+  toJSON() {
+    return {top: this.top, text: this.text, bottom: this.bottom, className: this.className}
+  }
+
+  toD() {
     const path = []
     let first = true
     let onEdge = true
-    for (const c of this._top) {
+    for (const c of this.top) {
       switch (c) {
         case '_':
           if (first) {
             path.push('M', '0', '50')
             onEdge = false
           }
-          if(onEdge) {
+          if (onEdge) {
             path.push('l', '0', '50')
           }
           path.push('l', '50', '0')
@@ -29,7 +32,7 @@ module.exports = class Piece {
             path.push('M', '0', '0')
             onEdge = true
           }
-          if(!onEdge) {
+          if (!onEdge) {
             path.push('l', '0', '-50')
           }
           path.push('l', '50', '0')
@@ -54,27 +57,26 @@ module.exports = class Piece {
       first = false
     }
 
-    if(onEdge) {
+    if (onEdge) {
       path.push('l', '0', '50')
     }
 
     path.push('l', '0', '150')
     onEdge = false
 
-    first = true
-    for (let i = this._bottom.length - 1; i >= 0; i--){
-      const c = this._bottom[i];
+    for (let i = this.bottom.length - 1; i >= 0; i--) {
+      const c = this.bottom[i];
 
       switch (c) {
         case '‾':
-          if(onEdge) {
+          if (onEdge) {
             path.push('l', '0', '-50')
           }
           path.push('l', '-50', '0')
           onEdge = false
           break
         case '_':
-          if(!onEdge) {
+          if (!onEdge) {
             path.push('l', '0', '50')
           }
           path.push('l', '-50', '0')
@@ -96,20 +98,20 @@ module.exports = class Piece {
   }
 
   toText() {
-    return `<text x="50%" y="50%" alignment-baseline="middle" text-anchor="middle">${escapeHtml(this._text)}</text>`
+    return `<text x="50%" y="150" alignment-baseline="middle" text-anchor="middle">${escapeHtml(this.text)}</text>`
   }
 
-  toSvg() {
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 -2 504 256" width="506" height="258">
-  <defs>
-    <style type="text/css"><![CDATA[
-${this._style}
-${this._globalStyle}
-    ]]></style>
-  </defs>
-  <path stroke="#000000" stroke-width="4" d="${this.toPath()}" />
-  ${this.toText()}
-</svg>
+  toPath() {
+    return `<path stroke="#000000" stroke-width="4" d="${this.toD()}" />`
+  }
+
+  toG(attrs) {
+    attrs = {...attrs, class: this.className}
+
+    return `  <g ${Object.entries(attrs).map(e => `${e[0]}="${e[1]}"`).join(' ')}>
+    ${this.toPath()}
+    ${this.toText()}
+  </g>
 `
   }
 }
