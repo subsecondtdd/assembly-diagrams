@@ -9,7 +9,7 @@ pngs: $(PNGS)
 
 images/svg/%.svg: assemblies/%.txt src/assembly.css
 	mkdir -p $(@D)
-	./cli.js $< 16 > $@
+	./cli.js $< --stroke-width 16 > $@
 
 images/png/%.png: images/svg/%.svg
 	mkdir -p $(@D)
