@@ -1,17 +1,19 @@
 {
-  "name": "full-stack-diagrams",
-  "version": "1.0.0",
-  "description": "Generate components for full-stack diagrams",
+  "name": "assembly-diagrams",
+  "version": "0.0.1",
+  "description": "Generate Assembly Diagram SVGs",
   "main": "cli.js",
-  "repository": "git@github.com:subsecondtdd/full-stack-diagrams.git",
+  "repository": "git@github.com:subsecondtdd/assembly-diagrams.git",
   "author": "Aslak Hellesøy <aslak.hellesoy@gmail.com>",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "mkdirp": "^0.5.1",
-    "mocha": "^5.2.0"
+    "mocha": "^9.0.1"
   },
   "scripts": {
     "test": "mocha"
+  },
+  "bin": {
+    "assembly-diagrams": "./cli.js",
   }
 }
