@@ -46,7 +46,7 @@ describe('Component', () => {
       z
     `
 
-    assert.deepStrictEqual(component.toD(), expected)
+    assert.deepStrictEqual(component.toD(50), expected)
   })
 
   it('generates escaped text', () => {
@@ -67,7 +67,7 @@ describe('Component', () => {
       'http'
     )
 
-    const g = component.toG({transform: 'translate(0 200)'}).split('\n')[0].trim()
+    const g = component.toG(50, {transform: 'translate(0 200)'}).split('\n')[0].trim()
     assert.strictEqual(g, '<g transform="translate(0 200)" class="http">')
   })
 })

@@ -9,11 +9,11 @@ pngs: $(PNGS)
 
 images/svg/%.svg: assemblies/%.txt src/assembly.css
 	mkdir -p $(@D)
-	./cli.js $< src/assembly.css > $@
+	./cli.js $< 20 > $@
 
 images/png/%.png: images/svg/%.svg
 	mkdir -p $(@D)
-	cairosvg $< -o $@
+	cairosvg --scale 1.6 $< -o $@
 
 clean:
 	rm -rf images

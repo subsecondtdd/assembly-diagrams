@@ -12,21 +12,16 @@ module.exports = function parse(assemblyScript) {
     line = line.trim()
     let n = i % 2
 
-    switch(n) {
-      case 0: {
-        const [edge, className] = line.split('.')
-        if(previousEdge) {
-          const component = new Component(previousEdge, text, edge, previousClassName)
-          components.push(component)
-        }
-        previousEdge = edge
-        previousClassName = className
-        break
+    if (i % 2 === 0) {
+      const [edge, className] = line.split('.')
+      if (previousEdge) {
+        const component = new Component(previousEdge, text, edge, previousClassName)
+        components.push(component)
       }
-      case 1: {
-        text = line
-        break
-      }
+      previousEdge = edge
+      previousClassName = className
+    } else {
+      text = line
     }
   })
 

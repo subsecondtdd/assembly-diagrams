@@ -6,7 +6,12 @@ text {
 
 path {
   stroke: #000000;
-  stroke-width: 6px;
+  /*
+  Do not specify stroke-width here.
+  It is specified in Assembly#toSvg because
+  the stroke width is needed to calculate the width
+  and height of the SVG
+  */
 }
 
 /*

@@ -10,7 +10,7 @@ module.exports = class Component {
     return {top: this.top, text: this.text, bottom: this.bottom, className: this.className}
   }
 
-  toD() {
+  toD(squareSize) {
     const path = []
     let first = true
     let onEdge = true
@@ -18,39 +18,39 @@ module.exports = class Component {
       switch (c) {
         case '_':
           if (first) {
-            path.push('M', '0', '50')
+            path.push('M', 0, squareSize)
             onEdge = false
           }
           if (onEdge) {
-            path.push('l', '0', '50')
+            path.push('l', 0, squareSize)
           }
-          path.push('l', '50', '0')
+          path.push('l', squareSize, 0)
           onEdge = false
           break
         case '‾':
           if (first) {
-            path.push('M', '0', '0')
+            path.push('M', 0, 0)
             onEdge = true
           }
           if (!onEdge) {
-            path.push('l', '0', '-50')
+            path.push('l', 0, -squareSize)
           }
-          path.push('l', '50', '0')
+          path.push('l', squareSize, 0)
           onEdge = true
           break
         case '╱':
           if (first) {
-            path.push('M', '0', '50')
+            path.push('M', 0, squareSize)
             onEdge = true
           }
-          path.push('l', '50', '-50')
+          path.push('l', squareSize, -squareSize)
           onEdge = true
           break
         case '╲':
           if (first) {
-            path.push('M', '0', '0')
+            path.push('M', 0, 0)
           }
-          path.push('l', '50', '50')
+          path.push('l', squareSize, squareSize)
           onEdge = false
           break
       }
@@ -58,10 +58,10 @@ module.exports = class Component {
     }
 
     if (onEdge) {
-      path.push('l', '0', '50')
+      path.push('l', 0, squareSize)
     }
 
-    path.push('l', '0', '150')
+    path.push('l', 0, '150')
     onEdge = false
 
     for (let i = this.bottom.length - 1; i >= 0; i--) {
@@ -70,24 +70,24 @@ module.exports = class Component {
       switch (c) {
         case '‾':
           if (onEdge) {
-            path.push('l', '0', '-50')
+            path.push('l', 0, -squareSize)
           }
-          path.push('l', '-50', '0')
+          path.push('l', -squareSize, 0)
           onEdge = false
           break
         case '_':
           if (!onEdge) {
-            path.push('l', '0', '50')
+            path.push('l', 0, squareSize)
           }
-          path.push('l', '-50', '0')
+          path.push('l', -squareSize, 0)
           onEdge = true
           break
         case '╱':
-          path.push('l', '-50', '50')
+          path.push('l', -squareSize, squareSize)
           onEdge = true
           break
         case '╲':
-          path.push('l', '-50', '-50')
+          path.push('l', -squareSize, -squareSize)
           onEdge = false
           break
       }
@@ -101,15 +101,15 @@ module.exports = class Component {
     return `<text x="50%" y="128" alignment-baseline="middle" text-anchor="middle">${escapeHtml(this.text)}</text>`
   }
 
-  toPath() {
-    return `<path stroke="#000000" stroke-width="4" d="${this.toD()}" />`
+  toPath(squareSize) {
+    return `<path d="${this.toD(squareSize)}" />`
   }
 
-  toG(attrs) {
+  toG(squareSize, attrs) {
     attrs = {...attrs, class: this.className}
 
     return `  <g ${Object.entries(attrs).map(e => `${e[0]}="${e[1]}"`).join(' ')}>
-    ${this.toPath()}
+    ${this.toPath(squareSize)}
     ${this.toText()}
   </g>
 `
