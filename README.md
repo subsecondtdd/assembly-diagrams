@@ -66,12 +66,27 @@ It also makes it easier to quickly spot what's essential about an assembly:
 
 ## Generate your own assembly diagrams
 
-    npx assembly-diagrams some-assembly.txt [some-style.css] > some-assembly.svg
+Write an assembly script by copying and modifying one of the scripts in the `assemblies` directory.
+You also need Node.js installed. Then run:
+
+    npx assembly-diagrams some-assembly.txt > some-assembly.svg
+
+For more information:
+
+    npx assembly-diagrams --help
 
 ### Build PNGs from SVGs
 
-If you need to convert the SVG file to a PNG file, you can use [cairosvg]().
+If you need to convert the SVG file to a PNG file, you can use [cairosvg](https://cairosvg.org/).
 
     brew install python3
     pip3 install cairosvg lxml tinycss cssselect
     cairosvg --scale 0.4 assembly.svg -o assembly.png
+
+The `Makefile` contains an example of how to automate generation of SVG and PNG files
+
+## Release process
+
+    npm version major|minor|patch
+    npm publish
+    git push && git push --tags
