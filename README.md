@@ -31,7 +31,7 @@ Each of these assemblies make tradeoffs between three important aspects of autom
 
 * Speed
 * Confidence (how much is tested)
-* Diagnostic precision (how easy it is to understand why a test fails)
+* Diagnostic precision (it is easier to understand why a test fails when there are fewer components)
 
 The general idea is to have more of the fast tests and fewer of the slow ones -
 as few as you can get away with.
@@ -47,22 +47,6 @@ The extremely fast acceptance tests enable high productivity, as developers can
 get near-instant feedback on their changes. The slower, really thorough
 ones have a different purpose - to verify that everything works before a commit,
 and for more thorough CI tests.
-
-## Conventions
-
-Components are grouped in the follow categories:
-
-* test code - green
-* infrastructure - pink
-* production code  - light blue
-
-This makes it easier to distinguish between different types of components.
-It also makes it easier to quickly spot what's essential about an assembly:
-
-* How fast is it? (less infrastructure means faster tests)
-* How much confidence does it give? (less production code means less confidence)
-* How easy is it to diagnose why a test failed? (less production code and infastructure means easier)
-  (fast/slow, with/without infrastructure).
 
 ## Generate your own assembly diagrams
 
