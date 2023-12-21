@@ -2,20 +2,120 @@
   "name": "assembly-diagrams",
   "version": "0.0.1",
   "description": "Generate Assembly Diagram SVGs",
-  "main": "cli.js",
   "repository": "git@github.com:subsecondtdd/assembly-diagrams.git",
-  "author": "Aslak Hellesøy <aslak.hellesoy@gmail.com>",
   "license": "MIT",
-  "dependencies": {
-    "commander": "8.0.0"
-  },
-  "devDependencies": {
-    "mocha": "9.0.1"
-  },
-  "scripts": {
-    "test": "mocha"
-  },
   "bin": {
     "assembly-diagrams": "./cli.js"
+  },
+  "author": {
+    "name": "Aslak Hellesøy",
+    "email": "aslak.hellesoy@gmail.com",
+    "url": "https://github.com/subsecondtdd/assembly-diagrams"
+  },
+  "files": [
+    "./dist"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "keywords": [
+    "openapi",
+    "zod",
+    "json-schema",
+    "astro",
+    "fastify",
+    "remix",
+    "nextjs"
+  ],
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
+    "compile": "tsc --build",
+    "build": "tsup --dts --format cjs,esm --clean --entry src/index.ts",
+    "upgrade": "npm-check-updates --upgrade",
+    "prepare": "husky install",
+    "lint-staged": "lint-staged",
+    "format": "prettier './**/*.ts' --write",
+    "lint": "eslint './**/*.ts' --fix",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@swc/core": "1.3.101",
+    "@types/node": "20.10.5",
+    "@typescript-eslint/eslint-plugin": "6.15.0",
+    "@typescript-eslint/parser": "6.15.0",
+    "@vitest/coverage-v8": "1.1.0",
+    "@vitest/ui": "1.1.0",
+    "eslint": "8.56.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-simple-import-sort": "10.0.0",
+    "husky": "8.0.3",
+    "lint-staged": "15.2.0",
+    "npm-check-updates": "16.14.12",
+    "prettier": "3.1.1",
+    "ts-node": "10.9.2",
+    "tsup": "8.0.1",
+    "typescript": "5.3.3",
+    "vite": "5.0.10",
+    "vitest": "1.1.0"
+  },
+  "prettier": {
+    "semi": true,
+    "plugins": [],
+    "printWidth": 100,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "always"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --quiet --fix"
+    ],
+    "*.{json,ts}": [
+      "prettier --write"
+    ]
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "tsconfig.json",
+      "ecmaVersion": "latest",
+      "sourceType": "module"
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+      "@typescript-eslint/consistent-type-exports": "error",
+      "@typescript-eslint/consistent-type-imports": "error",
+      "no-unexpected-multiline": "off"
+    },
+    "plugins": [
+      "simple-import-sort"
+    ],
+    "env": {
+      "node": true
+    },
+    "ignorePatterns": [
+      "dist"
+    ]
+  },
+  "tsup": {
+    "entry": [
+      "src/index.ts"
+    ],
+    "splitting": false,
+    "sourcemap": true,
+    "clean": true
   }
 }
