@@ -117,5 +117,9 @@
     "splitting": false,
     "sourcemap": true,
     "clean": true
+  },
+  "dependencies": {
+    "graphology": "0.25.4",
+    "graphology-dag": "0.4.1"
   }
 }
