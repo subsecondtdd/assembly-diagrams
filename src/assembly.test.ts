@@ -33,18 +33,26 @@ describe('assembly', () => {
       graph.mergeEdge('b', 'c');
       graph.mergeEdge('c', 'd');
 
-      const sorted = topologicalSort(graph);
+      const componentNames = topologicalSort(graph);
 
-      const stack = new Stack(sorted, [
-        null,
+      const connectors = [
+        undefined,
         TriangleConnector,
         SemicircleConnector,
         StairsConnector,
-        null,
-      ]);
+        undefined,
+      ];
+      const fills = ['pink', 'yellow', 'orange', 'cyan'];
+      const stackedComponents: StackedComponent[] = componentNames.map((name, i) => ({
+        name,
+        fill: fills[i],
+        topConnector: connectors[i],
+        bottomConnector: connectors[i + 1],
+      }));
+      const stack = new Stack(stackedComponents);
 
       const g = new Graphic();
-      g.beginPath({ Fill: 'pink', Color: 'red', Width: 4 });
+      // g.beginPath({ Fill: 'pink', Color: 'red', Width: 4 });
       stack.draw(g);
       const svg = g.asSVG('px');
       console.log(svg);
@@ -53,44 +61,41 @@ describe('assembly', () => {
   });
 });
 
+type StackedComponent = {
+  name: string;
+  fill: string;
+  topConnector: ConnectorConstructor | undefined;
+  bottomConnector: ConnectorConstructor | undefined;
+};
+
 class Stack {
   private readonly unit = 10;
   private readonly componentWidth = 16;
   private readonly componentHeight = 7;
   private readonly connectorPadding = (this.componentWidth - 4) / 2;
 
-  constructor(
-    private readonly components: string[],
-    private readonly connectors: (null | ConnectorConstructor)[],
-  ) {
-    if (components.length + 1 !== connectors.length) {
-      throw new Error(
-        `A stack of ${components.length} components requires ${components.length + 1} connectors`,
-      );
-    }
-  }
+  constructor(private readonly components: StackedComponent[]) {}
 
   draw(g: Graphic): Graphic {
     for (let i = 0; i < this.components.length; i++) {
       if (i > 0) {
         g.move(this.componentHeight * this.unit).turnLeft(90);
       }
+      const { bottomConnector, topConnector, fill } = this.components[i];
+      g.beginPath({ Fill: fill, Color: 'black', Width: 4 });
 
-      const TopConnector = this.connectors[i];
-      const BottomConnector = this.connectors[i + 1];
-
-      if (BottomConnector === null) {
+      if (bottomConnector === undefined) {
         g.draw(this.componentWidth * this.unit);
       } else {
-        new BottomConnector(g, this.unit).draw('in', this.connectorPadding);
+        new bottomConnector(g, this.unit).draw('in', this.connectorPadding);
       }
       g.turnLeft(90);
       g.draw(this.componentHeight * this.unit);
       g.turnLeft(90);
-      if (TopConnector === null) {
+      if (topConnector === undefined) {
         g.draw(this.componentWidth * this.unit);
       } else {
-        new TopConnector(g, this.unit).draw('out', this.connectorPadding);
+        new topConnector(g, this.unit).draw('out', this.connectorPadding);
       }
       g.turnLeft(90);
       g.draw(this.componentHeight * this.unit);
