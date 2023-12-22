@@ -5,6 +5,7 @@ import { topologicalSort } from 'graphology-dag';
 import { Graphic } from 'svg-turtle';
 import { describe, expect, it } from 'vitest';
 
+import type { ConnectorConstructor } from './assembly';
 import { SemicircleConnector, StairsConnector, TriangleConnector } from './assembly';
 describe('assembly', () => {
   it('should be hexagonal when one node has more than 2 edges', () => {
@@ -30,10 +31,17 @@ describe('assembly', () => {
       const graph = new Graph({ type: 'directed' });
       graph.mergeEdge('a', 'b');
       graph.mergeEdge('b', 'c');
+      graph.mergeEdge('c', 'd');
 
       const sorted = topologicalSort(graph);
 
-      const stack = new Stack(sorted);
+      const stack = new Stack(sorted, [
+        null,
+        TriangleConnector,
+        SemicircleConnector,
+        StairsConnector,
+        null,
+      ]);
 
       const g = new Graphic();
       g.beginPath({ Fill: 'pink', Color: 'red', Width: 4 });
@@ -47,46 +55,46 @@ describe('assembly', () => {
 
 class Stack {
   private readonly unit = 10;
-  private readonly componentWidth = 14;
+  private readonly componentWidth = 16;
   private readonly componentHeight = 7;
-  constructor(public readonly components: string[]) {}
+  private readonly connectorPadding = (this.componentWidth - 4) / 2;
+
+  constructor(
+    private readonly components: string[],
+    private readonly connectors: (null | ConnectorConstructor)[],
+  ) {
+    if (components.length + 1 !== connectors.length) {
+      throw new Error(
+        `A stack of ${components.length} components requires ${components.length + 1} connectors`,
+      );
+    }
+  }
 
   draw(g: Graphic): Graphic {
-    new TriangleConnector(g, this.unit).draw('in', 5);
-    g.turnLeft(90);
-    g.draw(this.componentHeight * this.unit);
-    g.turnLeft(90);
-    g.draw(this.componentWidth * this.unit);
-    g.turnLeft(90);
-    g.draw(this.componentHeight * this.unit);
+    for (let i = 0; i < this.components.length; i++) {
+      if (i > 0) {
+        g.move(this.componentHeight * this.unit).turnLeft(90);
+      }
 
-    g.move(this.componentHeight * this.unit).turnLeft(90);
-    new SemicircleConnector(g, this.unit).draw('in', 5);
-    g.turnLeft(90);
-    g.draw(this.componentHeight * this.unit);
-    g.turnLeft(90);
-    new TriangleConnector(g, this.unit).draw('out', 5);
-    g.turnLeft(90);
-    g.draw(this.componentHeight * this.unit);
+      const TopConnector = this.connectors[i];
+      const BottomConnector = this.connectors[i + 1];
 
-    g.move(this.componentHeight * this.unit).turnLeft(90);
-    new StairsConnector(g, this.unit).draw('in', 5);
-    g.turnLeft(90);
-    g.draw(this.componentHeight * this.unit);
-    g.turnLeft(90);
-    new SemicircleConnector(g, this.unit).draw('out', 5);
-    g.turnLeft(90);
-    g.draw(this.componentHeight * this.unit);
-
-    g.move(this.componentHeight * this.unit).turnLeft(90);
-    g.draw(this.componentWidth * this.unit);
-    g.turnLeft(90);
-    g.draw(this.componentHeight * this.unit);
-    g.turnLeft(90);
-    new StairsConnector(g, this.unit).draw('out', 5);
-    g.turnLeft(90);
-    g.draw(this.componentHeight * this.unit);
-
+      if (BottomConnector === null) {
+        g.draw(this.componentWidth * this.unit);
+      } else {
+        new BottomConnector(g, this.unit).draw('in', this.connectorPadding);
+      }
+      g.turnLeft(90);
+      g.draw(this.componentHeight * this.unit);
+      g.turnLeft(90);
+      if (TopConnector === null) {
+        g.draw(this.componentWidth * this.unit);
+      } else {
+        new TopConnector(g, this.unit).draw('out', this.connectorPadding);
+      }
+      g.turnLeft(90);
+      g.draw(this.componentHeight * this.unit);
+    }
     return g;
   }
 }

@@ -27,7 +27,7 @@ function curves(protrude: Protrude): [Curve, Curve] {
   return [curveLeft, curveRight];
 }
 
-abstract class Connector {
+export abstract class Connector {
   constructor(
     protected readonly g: Graphic,
     protected readonly unit: number,
@@ -40,6 +40,8 @@ abstract class Connector {
    */
   abstract draw(protrude: Protrude, pad: number): Graphic;
 }
+
+export type ConnectorConstructor = new (g: Graphic, unit: number) => Connector;
 
 export class RectangleConnector extends Connector {
   draw(protrude: Protrude, pad: number) {
