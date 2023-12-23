@@ -39,12 +39,7 @@ export abstract class ConnectorPath {
 
 export type ConnectorPathConstructor = new (g: Graphic) => ConnectorPath;
 
-export function getConnectorPathConstructor(
-  connector: Connector | undefined,
-): ConnectorPathConstructor | undefined {
-  if (connector === undefined) {
-    return undefined;
-  }
+export function getConnectorPathConstructor(connector: Connector): ConnectorPathConstructor {
   switch (connector) {
     case 'rectangle':
       return RectanglePath;
