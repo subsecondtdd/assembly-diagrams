@@ -11,4 +11,8 @@ export type ConnectionAttributes = {
   assembly: string;
 };
 
-export class AssemblyGraph extends Graph<ComponentAttributes, ConnectionAttributes> {}
+export class AssemblyGraph extends Graph<ComponentAttributes, ConnectionAttributes> {
+  constructor() {
+    super({ type: 'directed' });
+  }
+}

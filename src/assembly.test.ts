@@ -5,11 +5,12 @@ import { describe, expect, it } from 'vitest';
 
 import { StackedAssembly } from './rendering/StackedAssembly';
 import { toStackedComponents } from './stack/toStackedComponents';
+import { toAssemblyGraph } from './toAssemblyGraph';
 import { AssemblyGraph } from './types';
 
 describe('assembly', () => {
   it('should be hexagonal when one node has more than 2 edges', () => {
-    const graph = new AssemblyGraph({ type: 'directed' });
+    const graph = new AssemblyGraph();
     graph.mergeEdge('a', 'hex');
     graph.mergeEdge('b', 'hex');
     graph.mergeEdge('hex', 'x');
@@ -18,7 +19,7 @@ describe('assembly', () => {
   });
 
   it('should not be hexagonal when no node has more than 2 edges', () => {
-    const graph = new AssemblyGraph({ type: 'directed' });
+    const graph = new AssemblyGraph();
     graph.mergeEdge('a', 'b');
     graph.mergeEdge('b', 'c');
     graph.mergeEdge('c', 'a');
@@ -28,7 +29,7 @@ describe('assembly', () => {
 
   describe('diagram', () => {
     it('should stack legos on top of each other', () => {
-      const graph = new AssemblyGraph({ type: 'directed' });
+      const graph = new AssemblyGraph();
       graph.mergeEdge('spa', 'fetch', {
         assembly: 'production',
       });
@@ -41,9 +42,9 @@ describe('assembly', () => {
       graph.mergeEdge('webserver', 'fetchhandler', {
         assembly: 'production',
       });
-      // graph.mergeEdge('spa', 'fetchhandler', {
-      //   assembly: 'tdd',
-      // });
+      graph.mergeEdge('spa', 'fetchhandler', {
+        assembly: 'tdd',
+      });
 
       graph.mergeNode('spa', {
         fill: 'orange',
@@ -65,9 +66,14 @@ describe('assembly', () => {
         input: 'semicircle',
       });
 
-      const stack = new StackedAssembly(new Graphic());
+      const assemblyGraph = toAssemblyGraph(graph, {
+        assembly: 'tdd',
+      });
 
-      const components = toStackedComponents(graph);
+      const components = toStackedComponents(assemblyGraph);
+      console.log({ components });
+
+      const stack = new StackedAssembly(new Graphic());
       const g = stack.draw(components, {
         unit: 10,
         componentWidth: 16,
