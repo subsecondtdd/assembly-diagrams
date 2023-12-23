@@ -5,18 +5,25 @@ export type Connector = 'rectangle' | 'triangle' | 'semicircle' | 'stairs';
 
 export type ComponentAttributes = {
   fill: string;
-  input?: Connector;
 };
 
 export type ConnectionAttributes<Assembly extends string> = {
   assembly: Assembly;
+  connector: Connector;
 };
 
 export type Component = {
   name: string;
   fill: string;
-  topConnector: Connector | undefined;
-  bottomConnector: Connector | undefined;
+  inbound: Connector | null;
+  outbound: Connector | null;
+};
+
+export type StackedAssembly = readonly Component[];
+
+export type HexagonalAssembly = {
+  inbound: readonly Component[];
+  outbound: readonly Component[];
 };
 
 export class ComponentGraph<Assembly extends string> {
@@ -32,31 +39,34 @@ export class ComponentGraph<Assembly extends string> {
     this.graph.mergeNode(node, attributes);
   }
 
-  /**
-   * @param graph
-   * @returns the hexagon node if the graph is hexagonal, otherwise null
-   */
-  hexagon(): string | null {
-    const nodesWithMoreThanTwoEdges = this.graph
-      .nodes()
-      .filter((node) => this.graph.degree(node) > 2);
-    if (nodesWithMoreThanTwoEdges.length === 1) {
-      return nodesWithMoreThanTwoEdges[0];
-    } else {
-      return null;
+  toHexagonalAssembly(assembly: Assembly): HexagonalAssembly {
+    const assemblyGraph = this.toAssemblyGraph(assembly);
+    const hexagon = this.hexagon(assemblyGraph);
+    if (hexagon === null) {
+      throw new Error(`Could not determine hexagon node`);
     }
+
+    // const inboundEdges = assemblyGraph.inboundEdges(hexagon);
+    // const outboundEdges = assemblyGraph.outboundEdges(hexagon);
+
+    // const inbound: Component[] = inboundEdges.map(edge => {
+    //   assemblyGraph.getTargetAttributes()
+    // })
+
+    return {
+      inbound: [],
+      outbound: [],
+    };
   }
 
   /**
    * Converts an assembly graph into an array of stacked components.
    * The result can be rendered with StackedAssembly
    */
-  toStackedAssembly(assembly: Assembly): Component[] {
+  toStackedAssembly(assembly: Assembly): StackedAssembly {
     const assemblyGraph = this.toAssemblyGraph(assembly);
     const componentNames = topologicalSort(assemblyGraph);
     const components: Component[] = componentNames.map((name) => {
-      const { input: topConnector, fill } = assemblyGraph.getNodeAttributes(name);
-
       const outboundEdges = assemblyGraph.outboundEdges(name);
       if (outboundEdges.length > 1) {
         throw new Error(
@@ -68,18 +78,35 @@ export class ComponentGraph<Assembly extends string> {
         throw new Error(`Unexpected state - node ${name} has ${inboundEdges.length} inbound edges`);
       }
 
-      const { input: bottomConnector } =
-        outboundEdges.length === 0
-          ? { input: undefined }
-          : assemblyGraph.getTargetAttributes(outboundEdges[0]);
-      return {
+      const inbound = inboundEdges[0]
+        ? assemblyGraph.getEdgeAttribute(inboundEdges[0], 'connector')
+        : null;
+      const outbound = outboundEdges[0]
+        ? assemblyGraph.getEdgeAttribute(outboundEdges[0], 'connector')
+        : null;
+      const fill = assemblyGraph.getNodeAttribute(name, 'fill') || null;
+      const component: Component = {
         name,
         fill,
-        topConnector,
-        bottomConnector,
+        inbound,
+        outbound,
       };
+      return component;
     });
     return components;
+  }
+
+  /**
+   * @param graph
+   * @returns the hexagon node if the graph is hexagonal, otherwise null
+   */
+  private hexagon(graph: Graph): string | null {
+    const nodesWithMoreThanTwoEdges = graph.nodes().filter((node) => this.graph.degree(node) > 2);
+    if (nodesWithMoreThanTwoEdges.length === 1) {
+      return nodesWithMoreThanTwoEdges[0];
+    } else {
+      return null;
+    }
   }
 
   /**

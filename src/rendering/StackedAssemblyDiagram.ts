@@ -9,7 +9,7 @@ type Params = {
   componentHeight: number;
 };
 
-export class StackedAssembly {
+export class StackedAssemblyDiagram {
   constructor(private readonly g: Graphic) {}
 
   draw(components: readonly Component[], params: Params): Graphic {
@@ -21,10 +21,10 @@ export class StackedAssembly {
       if (i > 0) {
         g.move(componentHeight * unit).turnLeft(90);
       }
-      const { bottomConnector, topConnector, fill } = components[i];
+      const { outbound: bottomConnector, inbound: topConnector, fill } = components[i];
       g.beginPath({ Fill: fill, Color: 'black', Width: 4 });
 
-      if (bottomConnector === undefined) {
+      if (bottomConnector === null) {
         g.draw(componentWidth * unit);
       } else {
         const ConnectorPath = getConnectorPathConstructor(bottomConnector);
@@ -33,7 +33,7 @@ export class StackedAssembly {
       g.turnLeft(90);
       g.draw(componentHeight * unit);
       g.turnLeft(90);
-      if (topConnector === undefined) {
+      if (topConnector === null) {
         g.draw(componentWidth * unit);
       } else {
         const ConnectorPath = getConnectorPathConstructor(topConnector);
