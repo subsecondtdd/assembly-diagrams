@@ -6,11 +6,14 @@ import { describe, expect, it } from 'vitest';
 
 import type { Component, StackedAssembly } from './ComponentGraph';
 import { ComponentGraph } from './ComponentGraph';
+import type { HexagonalAssemblyDiagramParams } from './rendering/HexagonalAssemblyDiagram';
+import { HexagonalAssemblyDiagram } from './rendering/HexagonalAssemblyDiagram';
+import type { StackedAssemblyDiagramParams } from './rendering/StackedAssemblyDiagram';
 import { StackedAssemblyDiagram } from './rendering/StackedAssemblyDiagram';
 
 describe('ComponentGraph', () => {
   describe('.toHexagonalAssembly', () => {
-    it('creates a 3-connector hexagon', () => {
+    it.only('creates a 3-connector hexagon', () => {
       const componentGraph = new ComponentGraph<'production'>();
 
       componentGraph.mergeEdge('app', 'email', {
@@ -38,7 +41,8 @@ describe('ComponentGraph', () => {
         fill: 'green',
       });
 
-      const { inbound, outbound } = componentGraph.toHexagonalAssembly('production');
+      const hexagonalAssembly = componentGraph.toHexagonalAssembly('production');
+      const { inbound, outbound } = hexagonalAssembly;
 
       const expectedInbound: Component[] = [
         {
@@ -65,6 +69,21 @@ describe('ComponentGraph', () => {
         },
       ];
       expect(outbound).toEqual(expectedOutbound);
+
+      const params: HexagonalAssemblyDiagramParams = {
+        unit: 10,
+        componentWidth: 16,
+        componentHeight: 8,
+      };
+
+      const svg = new HexagonalAssemblyDiagram(new Graphic())
+        .draw(hexagonalAssembly, params)
+        .asSVG('px');
+      console.log(svg);
+
+      const path = `assemblies/ecommerce/hexagonal.svg`;
+      fs.mkdirSync(dirname(path), { recursive: true });
+      fs.writeFileSync(path, svg);
     });
   });
 
@@ -151,7 +170,7 @@ describe('ComponentGraph', () => {
           fill: 'lightgreen',
         });
 
-        const stackParams = {
+        const params: StackedAssemblyDiagramParams = {
           unit: 10,
           componentWidth: 16,
           componentHeight: 8,
@@ -163,9 +182,7 @@ describe('ComponentGraph', () => {
           fs.mkdirSync(dirname(path), { recursive: true });
           fs.writeFileSync(
             path,
-            new StackedAssemblyDiagram(new Graphic())
-              .draw(productionAssembly, stackParams)
-              .asSVG('px'),
+            new StackedAssemblyDiagram(new Graphic()).draw(productionAssembly, params).asSVG('px'),
           );
         }
       });
