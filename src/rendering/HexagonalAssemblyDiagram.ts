@@ -14,7 +14,7 @@ export class HexagonalAssemblyDiagram {
 
   draw(assembly: HexagonalAssembly, params: HexagonalAssemblyDiagramParams): Graphic {
     const { unit, componentWidth, componentHeight } = params;
-    const edgePadding = componentWidth / 2;
+    const edgePadding = componentWidth / 4;
     const connectorPadding = (componentWidth - 4) / 2;
     const g = this.g;
 
@@ -25,7 +25,7 @@ export class HexagonalAssemblyDiagram {
 
     console.log({ inOutEdgeCount, edgeAngle });
 
-    g.beginPath({ Color: 'red', Width: 4 });
+    g.beginPath({ Fill: 'white', Color: 'black', Width: 4 });
     g.turnRight(edgeAngle);
 
     for (let i = 0; i < inOutEdgeCount * 2; i++) {
@@ -69,6 +69,7 @@ export class HexagonalAssemblyDiagram {
           } connector for component ${JSON.stringify(component, null, 2)}`,
         );
       }
+      g.beginPath({ Fill: component.fill, Color: 'black', Width: 4 });
       const ConnectorPath = getConnectorPathConstructor(connector);
       g.move(edgePadding * unit);
       g.turnRight(90);
