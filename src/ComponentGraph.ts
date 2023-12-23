@@ -51,7 +51,7 @@ export class ComponentGraph<Assembly extends string> {
    * Converts an assembly graph into an array of stacked components.
    * The result can be rendered with StackedAssembly
    */
-  toStackedComponents(assembly: Assembly): Component[] {
+  toStackedAssembly(assembly: Assembly): Component[] {
     const assemblyGraph = this.toAssemblyGraph(assembly);
     const componentNames = topologicalSort(assemblyGraph);
     const components: Component[] = componentNames.map((name) => {

@@ -1,5 +1,0 @@
-app     -> fetch
-fetch   -> http
-http    -> server
-server  -> handler
-handler -> db
