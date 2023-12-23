@@ -36,18 +36,19 @@ describe('assembly', () => {
       });
       graph.mergeNode('b', {
         fill: 'yellow',
+        input: 'semicircle',
       });
       graph.mergeNode('c', {
         fill: 'pink',
+        input: 'triangle',
       });
       graph.mergeNode('d', {
         fill: 'cyan',
+        input: 'rectangle',
       });
       const stack = new StackedAssembly(graph);
 
-      const g = new Graphic();
-      // g.beginPath({ Fill: 'pink', Color: 'red', Width: 4 });
-      stack.draw(g);
+      const g = stack.draw(new Graphic());
       const svg = g.asSVG('px');
       fs.writeFileSync('assemblies/web.svg', svg);
     });

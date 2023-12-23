@@ -2,18 +2,16 @@ import { topologicalSort } from 'graphology-dag';
 import type { Graphic } from 'svg-turtle';
 
 import {
-  type ConnectorConstructor,
-  RectangleConnector,
-  SemicircleConnector,
-  StairsConnector,
-} from './Connector';
+  type ConnectorPathConstructor,
+  getConnectorPathConstructor,
+} from './rendering/ConnectorPath';
 import type { AssemblyGraph } from './types';
 
 type StackedComponent = {
   name: string;
   fill: string;
-  topConnector: ConnectorConstructor | undefined;
-  bottomConnector: ConnectorConstructor | undefined;
+  topConnector: ConnectorPathConstructor | undefined;
+  bottomConnector: ConnectorPathConstructor | undefined;
 };
 
 export class StackedAssembly {
@@ -25,19 +23,26 @@ export class StackedAssembly {
 
   constructor(graph: AssemblyGraph) {
     const componentNames = topologicalSort(graph);
-    const connectors = [
-      undefined,
-      RectangleConnector,
-      SemicircleConnector,
-      StairsConnector,
-      undefined,
-    ];
-    const components = componentNames.map((name, i) => {
+    const components = componentNames.map((name) => {
+      const { input, fill } = graph.getNodeAttributes(name);
+      const topConnector = getConnectorPathConstructor(input);
+
+      const outboundEdges = graph.outboundEdges(name);
+      if (outboundEdges.length > 1) {
+        throw new Error(
+          `Unexpected state - node ${name} has ${outboundEdges.length} outbound edges`,
+        );
+      }
+      const { input: outboundInput } =
+        outboundEdges.length === 0
+          ? { input: undefined }
+          : graph.getTargetAttributes(outboundEdges[0]);
+      const bottomConnector = getConnectorPathConstructor(outboundInput);
       return {
         name,
-        fill: graph.getNodeAttribute(name, 'fill'),
-        topConnector: connectors[i],
-        bottomConnector: connectors[i + 1],
+        fill,
+        topConnector,
+        bottomConnector,
       };
     });
     this.components = components;

@@ -1,15 +1,6 @@
 import type { Graphic } from 'svg-turtle';
 
-// const thickness = 4
-// const unit = 10
-// const connectorWidth = unit * 4
-
-// const hexagonSidePad = 50
-// const hexagonSide = connectorWidth + hexagonSidePad * 2
-// const componentHeight = unit * 5
-// const componentWidth = unit * 8
-// const componentOffset = (hexagonSide - componentWidth) / 2
-// const componentPad = (componentWidth - connectorWidth) / 2
+import type { Connector } from '../types';
 
 type Protrude = 'in' | 'out';
 type Curve = 'curveLeft' | 'curveRight';
@@ -27,7 +18,7 @@ function curves(protrude: Protrude): [Curve, Curve] {
   return [curveLeft, curveRight];
 }
 
-export abstract class Connector {
+export abstract class ConnectorPath {
   constructor(
     protected readonly g: Graphic,
     protected readonly unit: number,
@@ -41,9 +32,29 @@ export abstract class Connector {
   abstract draw(protrude: Protrude, pad: number): Graphic;
 }
 
-export type ConnectorConstructor = new (g: Graphic, unit: number) => Connector;
+export type ConnectorPathConstructor = new (g: Graphic, unit: number) => ConnectorPath;
 
-export class RectangleConnector extends Connector {
+export function getConnectorPathConstructor(
+  connector: Connector | undefined,
+): ConnectorPathConstructor | undefined {
+  if (connector === undefined) {
+    return undefined;
+  }
+  switch (connector) {
+    case 'rectangle':
+      return RectanglePath;
+    case 'semicircle':
+      return SemicirclePath;
+    case 'stairs':
+      return StairsPath;
+    case 'triangle':
+      return TrianglePath;
+    default:
+      throw new Error(`Unsupported connector: ${connector}`);
+  }
+}
+
+export class RectanglePath extends ConnectorPath {
   draw(protrude: Protrude, pad: number) {
     const [turnLeft, turnRight] = turns(protrude);
     return this.g
@@ -59,7 +70,7 @@ export class RectangleConnector extends Connector {
   }
 }
 
-export class TriangleConnector extends Connector {
+export class TrianglePath extends ConnectorPath {
   draw(protrude: Protrude, pad: number) {
     const [turnLeft, turnRight] = turns(protrude);
     return this.g
@@ -73,7 +84,7 @@ export class TriangleConnector extends Connector {
   }
 }
 
-export class StairsConnector extends Connector {
+export class StairsPath extends ConnectorPath {
   draw(protrude: Protrude, pad: number) {
     const [turnLeft, turnRight] = turns(protrude);
     return this.g
@@ -97,7 +108,7 @@ export class StairsConnector extends Connector {
   }
 }
 
-export class SemicircleConnector extends Connector {
+export class SemicirclePath extends ConnectorPath {
   draw(protrude: Protrude, pad: number) {
     const [turnLeft] = turns(protrude);
     const [, curveRight] = curves(protrude);
@@ -109,35 +120,3 @@ export class SemicircleConnector extends Connector {
       .draw(pad * this.unit);
   }
 }
-
-// const g = new Graphic()
-// g.beginPath({ Color:'black', Width: thickness, Fill: 'pink' })
-
-// new StairsConnector(g).draw('out', hexagonSidePad).turnLeft(60)
-// new RectangleConnector(g).draw('out', hexagonSidePad).turnLeft(60)
-// new TriangleConnector(g).draw('in', hexagonSidePad).turnLeft(60)
-// new RectangleConnector(g).draw('in', hexagonSidePad).turnLeft(60)
-// new TriangleConnector(g).draw('in', hexagonSidePad).turnLeft(60)
-// new SemicircleConnector(g).draw('out', hexagonSidePad).turnLeft(60)
-
-// // Draw a piece
-// g.alignAt(comp1)
-// g.beginPath({ Color:'red'})
-// // Move to beginning of component
-// g.turnLeft(180)
-// g.move(componentOffset)
-// g.turnLeft(90).draw(componentHeight)
-// g.turnRight(90).draw(componentWidth)
-// g.turnRight(90).draw(componentHeight)
-// g.turnRight(90).triangle('in', componentPad)
-
-//   // Draw a piece
-// g.alignAt(comp2)
-// g.beginPath({ Color:'blue'})
-// // Move to beginning of component
-// g.turnLeft(180)
-// g.move(componentOffset)
-// g.turnLeft(90).draw(componentHeight)
-// g.turnRight(90).draw(componentWidth)
-// g.turnRight(90).draw(componentHeight)
-// g.turnRight(90).stairs('out', componentPad)
