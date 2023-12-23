@@ -23,10 +23,12 @@ export class HexagonalAssemblyDiagram {
     const inOutEdgeCount = Math.max(3, inbound.length, outbound.length);
     const edgeAngle = 180 / inOutEdgeCount;
 
-    console.log({ inOutEdgeCount, edgeAngle });
-
     g.beginPath({ Fill: 'white', Color: 'black', Width: 4 });
     g.turnRight(edgeAngle);
+    if (inOutEdgeCount % 2 === 0) {
+      // To make sure there is always an angle on the horizontal line
+      g.turnRight(edgeAngle / 2);
+    }
 
     for (let i = 0; i < inOutEdgeCount * 2; i++) {
       const outboundComponent = i < inOutEdgeCount;
@@ -85,32 +87,6 @@ export class HexagonalAssemblyDiagram {
       g.move((componentWidth + edgePadding) * unit);
       g.turnLeft(edgeAngle);
     }
-
-    // for (let i = 0; i < assembly.length; i++) {
-    //   if (i > 0) {
-    //     g.move(componentHeight * unit).turnLeft(90);
-    //   }
-    //   const { outbound: bottomConnector, inbound: topConnector, fill } = assembly[i];
-    //   g.beginPath({ Fill: fill, Color: 'black', Width: 4 });
-
-    //   if (bottomConnector === null) {
-    //     g.draw(componentWidth * unit);
-    //   } else {
-    //     const ConnectorPath = getConnectorPathConstructor(bottomConnector);
-    //     new ConnectorPath(g).draw({ unit, protrude: 'in', pad: connectorPadding });
-    //   }
-    //   g.turnLeft(90);
-    //   g.draw(componentHeight * unit);
-    //   g.turnLeft(90);
-    //   if (topConnector === null) {
-    //     g.draw(componentWidth * unit);
-    //   } else {
-    //     const ConnectorPath = getConnectorPathConstructor(topConnector);
-    //     new ConnectorPath(g).draw({ unit, protrude: 'out', pad: connectorPadding });
-    //   }
-    //   g.turnLeft(90);
-    //   g.draw(componentHeight * unit);
-    // }
     return g;
   }
 }
