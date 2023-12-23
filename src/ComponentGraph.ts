@@ -46,16 +46,37 @@ export class ComponentGraph<Assembly extends string> {
       throw new Error(`Could not determine hexagon node`);
     }
 
-    // const inboundEdges = assemblyGraph.inboundEdges(hexagon);
-    // const outboundEdges = assemblyGraph.outboundEdges(hexagon);
+    const inboundEdges = assemblyGraph.inboundEdges(hexagon);
+    const inbound: Component[] = inboundEdges.map((edge) => {
+      const connector = assemblyGraph.getEdgeAttribute(edge, 'connector');
+      const { fill } = assemblyGraph.getSourceAttributes(edge);
+      const name = assemblyGraph.source(edge);
+      const component: Component = {
+        inbound: null,
+        outbound: connector,
+        name,
+        fill,
+      };
+      return component;
+    });
 
-    // const inbound: Component[] = inboundEdges.map(edge => {
-    //   assemblyGraph.getTargetAttributes()
-    // })
+    const outboundEdges = assemblyGraph.outboundEdges(hexagon);
+    const outbound: Component[] = outboundEdges.map((edge) => {
+      const connector = assemblyGraph.getEdgeAttribute(edge, 'connector');
+      const { fill } = assemblyGraph.getTargetAttributes(edge);
+      const name = assemblyGraph.target(edge);
+      const component: Component = {
+        inbound: connector,
+        outbound: null,
+        name,
+        fill,
+      };
+      return component;
+    });
 
     return {
-      inbound: [],
-      outbound: [],
+      inbound,
+      outbound,
     };
   }
 
@@ -66,16 +87,18 @@ export class ComponentGraph<Assembly extends string> {
   toStackedAssembly(assembly: Assembly): StackedAssembly {
     const assemblyGraph = this.toAssemblyGraph(assembly);
     const componentNames = topologicalSort(assemblyGraph);
-    const components: Component[] = componentNames.map((name) => {
-      const outboundEdges = assemblyGraph.outboundEdges(name);
+    const components: Component[] = componentNames.map((componentName) => {
+      const outboundEdges = assemblyGraph.outboundEdges(componentName);
       if (outboundEdges.length > 1) {
         throw new Error(
-          `Unexpected state - node ${name} has ${outboundEdges.length} outbound edges`,
+          `Unexpected state - node ${componentName} has ${outboundEdges.length} outbound edges`,
         );
       }
-      const inboundEdges = assemblyGraph.inboundEdges(name);
+      const inboundEdges = assemblyGraph.inboundEdges(componentName);
       if (inboundEdges.length > 1) {
-        throw new Error(`Unexpected state - node ${name} has ${inboundEdges.length} inbound edges`);
+        throw new Error(
+          `Unexpected state - node ${componentName} has ${inboundEdges.length} inbound edges`,
+        );
       }
 
       const inbound = inboundEdges[0]
@@ -84,9 +107,9 @@ export class ComponentGraph<Assembly extends string> {
       const outbound = outboundEdges[0]
         ? assemblyGraph.getEdgeAttribute(outboundEdges[0], 'connector')
         : null;
-      const fill = assemblyGraph.getNodeAttribute(name, 'fill') || null;
+      const fill = assemblyGraph.getNodeAttribute(componentName, 'fill') || null;
       const component: Component = {
-        name,
+        name: componentName,
         fill,
         inbound,
         outbound,

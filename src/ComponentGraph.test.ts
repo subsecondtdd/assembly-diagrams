@@ -4,7 +4,7 @@ import { dirname } from 'node:path';
 import { Graphic } from 'svg-turtle';
 import { describe, expect, it } from 'vitest';
 
-import type { StackedAssembly } from './ComponentGraph';
+import type { Component, StackedAssembly } from './ComponentGraph';
 import { ComponentGraph } from './ComponentGraph';
 import { StackedAssemblyDiagram } from './rendering/StackedAssemblyDiagram';
 
@@ -25,13 +25,46 @@ describe('ComponentGraph', () => {
         connector: 'rectangle',
         assembly: 'production',
       });
+      componentGraph.mergeNode('app', {
+        fill: 'pink',
+      });
+      componentGraph.mergeNode('email', {
+        fill: 'red',
+      });
+      componentGraph.mergeNode('payment', {
+        fill: 'blue',
+      });
+      componentGraph.mergeNode('api-client', {
+        fill: 'green',
+      });
 
-      // const hexagon = componentGraph.hexagon()
+      const { inbound, outbound } = componentGraph.toHexagonalAssembly('production');
 
-      // const {inbound, outbound} = componentGraph.toHexagonalAssembly('production')
+      const expectedInbound: Component[] = [
+        {
+          name: 'api-client',
+          inbound: null,
+          fill: 'green',
+          outbound: 'rectangle',
+        },
+      ];
+      expect(inbound).toEqual(expectedInbound);
 
-      // expect(inbound.map(({name}) => name)).toEqual(['api-client'])
-      // expect(outbound.map(({name}) => name)).toEqual(['api-client', 'email'])
+      const expectedOutbound: Component[] = [
+        {
+          name: 'email',
+          inbound: 'semicircle',
+          fill: 'red',
+          outbound: null,
+        },
+        {
+          name: 'payment',
+          inbound: 'triangle',
+          fill: 'blue',
+          outbound: null,
+        },
+      ];
+      expect(outbound).toEqual(expectedOutbound);
     });
   });
 
