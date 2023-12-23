@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { Graphic } from 'svg-turtle';
 import { describe, expect, it } from 'vitest';
 
-import { StackedAssembly } from './StackedAssembly';
+import { StackedAssembly } from './rendering/StackedAssembly';
 import { AssemblyGraph } from './types';
 
 describe('assembly', () => {
@@ -40,6 +40,9 @@ describe('assembly', () => {
       graph.mergeEdge('webserver', 'fetchhandler', {
         assembly: 'production',
       });
+      // graph.mergeEdge('spa', 'fetchhandler', {
+      //   assembly: 'tdd',
+      // });
 
       graph.mergeNode('spa', {
         fill: 'orange',
@@ -60,6 +63,7 @@ describe('assembly', () => {
         fill: 'lightgreen',
         input: 'semicircle',
       });
+
       const stack = new StackedAssembly(graph);
 
       const g = stack.draw(new Graphic());
