@@ -1,12 +1,10 @@
 import { describe, it } from 'vitest';
 
-import { toAssemblyGraph } from '../toAssemblyGraph';
-import { AssemblyGraph } from '../types';
-import { toStackedComponents } from './toStackedComponents';
+import { ComponentGraph } from '../types';
 
 describe('toStackedComponents', () => {
   it('filters on assembly', () => {
-    const componentGraph = new AssemblyGraph();
+    const componentGraph = new ComponentGraph();
 
     componentGraph.mergeEdge('a', 'b', {
       assembly: 'production',
@@ -15,11 +13,7 @@ describe('toStackedComponents', () => {
       assembly: 'test',
     });
 
-    const assemblyGraph = toAssemblyGraph(componentGraph, {
-      assembly: 'test',
-    });
-
-    const components = toStackedComponents(assemblyGraph);
+    const components = componentGraph.toStackedComponents('test');
     console.log(components);
   });
 });

@@ -1,6 +1,6 @@
 import type { Graphic } from 'svg-turtle';
 
-import type { StackedComponent } from '../stack/toStackedComponents';
+import type { StackedComponent } from '../types';
 import { getConnectorPathConstructor } from './ConnectorPath';
 
 type Params = {
