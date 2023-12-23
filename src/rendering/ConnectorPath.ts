@@ -18,21 +18,26 @@ function curves(protrude: Protrude): [Curve, Curve] {
   return [curveLeft, curveRight];
 }
 
+type Params = {
+  unit: number;
+  protrude: Protrude;
+
+  /**
+   * padding (in units) on each side of the connector
+   */
+  pad: number;
+};
+
 export abstract class ConnectorPath {
-  constructor(
-    protected readonly g: Graphic,
-    protected readonly unit: number,
-  ) {}
+  constructor(protected readonly g: Graphic) {}
+
   /**
    * Draws a connector. A connector fits in a recangle of width 4*unit and height 2*unit.
-   *
-   * @param protrude - 'in' or 'out'
-   * @param pad - padding (in units) on each side of the connector
    */
-  abstract draw(protrude: Protrude, pad: number): Graphic;
+  abstract draw(params: Params): Graphic;
 }
 
-export type ConnectorPathConstructor = new (g: Graphic, unit: number) => ConnectorPath;
+export type ConnectorPathConstructor = new (g: Graphic) => ConnectorPath;
 
 export function getConnectorPathConstructor(
   connector: Connector | undefined,
@@ -55,68 +60,72 @@ export function getConnectorPathConstructor(
 }
 
 export class RectanglePath extends ConnectorPath {
-  draw(protrude: Protrude, pad: number) {
+  draw(params: Params) {
+    const { protrude, unit, pad } = params;
     const [turnLeft, turnRight] = turns(protrude);
     return this.g
-      .draw(pad * this.unit)
+      .draw(pad * unit)
       [turnLeft](90)
-      .draw(2 * this.unit)
+      .draw(2 * unit)
       [turnRight](90)
-      .draw(4 * this.unit)
+      .draw(4 * unit)
       [turnRight](90)
-      .draw(2 * this.unit)
+      .draw(2 * unit)
       [turnLeft](90)
-      .draw(pad * this.unit);
+      .draw(pad * unit);
   }
 }
 
 export class TrianglePath extends ConnectorPath {
-  draw(protrude: Protrude, pad: number) {
+  draw(params: Params) {
+    const { protrude, unit, pad } = params;
     const [turnLeft, turnRight] = turns(protrude);
     return this.g
-      .draw(pad * this.unit)
+      .draw(pad * unit)
       [turnLeft](45)
-      .draw(2 * this.unit * Math.sqrt(2))
+      .draw(2 * unit * Math.sqrt(2))
       [turnRight](90)
-      .draw(2 * this.unit * Math.sqrt(2))
+      .draw(2 * unit * Math.sqrt(2))
       [turnLeft](45)
-      .draw(pad * this.unit);
+      .draw(pad * unit);
   }
 }
 
 export class StairsPath extends ConnectorPath {
-  draw(protrude: Protrude, pad: number) {
+  draw(params: Params) {
+    const { protrude, unit, pad } = params;
     const [turnLeft, turnRight] = turns(protrude);
     return this.g
-      .draw(pad * this.unit)
+      .draw(pad * unit)
       [turnLeft](90)
-      .draw(this.unit)
+      .draw(unit)
       [turnRight](90)
-      .draw(this.unit)
+      .draw(unit)
       [turnLeft](90)
-      .draw(this.unit)
+      .draw(unit)
       [turnRight](90)
-      .draw(this.unit * 2)
+      .draw(unit * 2)
       [turnRight](90)
-      .draw(this.unit)
+      .draw(unit)
       [turnLeft](90)
-      .draw(this.unit)
+      .draw(unit)
       [turnRight](90)
-      .draw(this.unit)
+      .draw(unit)
       [turnLeft](90)
-      .draw(pad * this.unit);
+      .draw(pad * unit);
   }
 }
 
 export class SemicirclePath extends ConnectorPath {
-  draw(protrude: Protrude, pad: number) {
+  draw(params: Params) {
+    const { protrude, unit, pad } = params;
     const [turnLeft] = turns(protrude);
     const [, curveRight] = curves(protrude);
     return this.g
-      .draw(pad * this.unit)
+      .draw(pad * unit)
       [turnLeft](90)
-      [curveRight](180, 2 * this.unit)
+      [curveRight](180, 2 * unit)
       [turnLeft](90)
-      .draw(pad * this.unit);
+      .draw(pad * unit);
   }
 }

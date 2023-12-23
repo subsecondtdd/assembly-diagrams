@@ -1,43 +1,43 @@
 import type { Graphic } from 'svg-turtle';
 
-import { toStackedComponents } from '../stack/toStackedComponents';
-import type { AssemblyGraph } from '../types';
+import type { StackedComponent } from '../stack/toStackedComponents';
+
+type Params = {
+  unit: number;
+  componentWidth: number;
+  componentHeight: number;
+};
 
 export class StackedAssembly {
-  private readonly unit = 10;
-  private readonly componentWidth = 16;
-  private readonly componentHeight = 7;
-  private readonly connectorPadding = (this.componentWidth - 4) / 2;
+  constructor(private readonly g: Graphic) {}
 
-  constructor(private readonly graph: AssemblyGraph) {}
-
-  draw(g: Graphic): Graphic {
-    const graph = this.graph;
-
-    const components = toStackedComponents(graph);
+  draw(components: readonly StackedComponent[], params: Params): Graphic {
+    const { unit, componentWidth, componentHeight } = params;
+    const connectorPadding = (componentWidth - 4) / 2;
+    const g = this.g;
 
     for (let i = 0; i < components.length; i++) {
       if (i > 0) {
-        g.move(this.componentHeight * this.unit).turnLeft(90);
+        g.move(componentHeight * unit).turnLeft(90);
       }
       const { bottomConnector, topConnector, fill } = components[i];
       g.beginPath({ Fill: fill, Color: 'black', Width: 4 });
 
       if (bottomConnector === undefined) {
-        g.draw(this.componentWidth * this.unit);
+        g.draw(componentWidth * unit);
       } else {
-        new bottomConnector(g, this.unit).draw('in', this.connectorPadding);
+        new bottomConnector(g).draw({ unit, protrude: 'in', pad: connectorPadding });
       }
       g.turnLeft(90);
-      g.draw(this.componentHeight * this.unit);
+      g.draw(componentHeight * unit);
       g.turnLeft(90);
       if (topConnector === undefined) {
-        g.draw(this.componentWidth * this.unit);
+        g.draw(componentWidth * unit);
       } else {
-        new topConnector(g, this.unit).draw('out', this.connectorPadding);
+        new topConnector(g).draw({ unit, protrude: 'out', pad: connectorPadding });
       }
       g.turnLeft(90);
-      g.draw(this.componentHeight * this.unit);
+      g.draw(componentHeight * unit);
     }
     return g;
   }

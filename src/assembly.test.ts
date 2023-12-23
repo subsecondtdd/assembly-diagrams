@@ -4,6 +4,7 @@ import { Graphic } from 'svg-turtle';
 import { describe, expect, it } from 'vitest';
 
 import { StackedAssembly } from './rendering/StackedAssembly';
+import { toStackedComponents } from './stack/toStackedComponents';
 import { AssemblyGraph } from './types';
 
 describe('assembly', () => {
@@ -64,9 +65,14 @@ describe('assembly', () => {
         input: 'semicircle',
       });
 
-      const stack = new StackedAssembly(graph);
+      const stack = new StackedAssembly(new Graphic());
 
-      const g = stack.draw(new Graphic());
+      const components = toStackedComponents(graph);
+      const g = stack.draw(components, {
+        unit: 10,
+        componentWidth: 16,
+        componentHeight: 8,
+      });
       const svg = g.asSVG('px');
       fs.writeFileSync('assemblies/web.svg', svg);
     });

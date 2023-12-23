@@ -6,7 +6,7 @@ import {
 } from '../rendering/ConnectorPath';
 import type { AssemblyGraph } from '../types';
 
-type StackedComponent = {
+export type StackedComponent = {
   name: string;
   fill: string;
   topConnector: ConnectorPathConstructor | undefined;
