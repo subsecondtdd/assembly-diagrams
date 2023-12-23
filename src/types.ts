@@ -8,7 +8,7 @@ export type ComponentAttributes = {
 };
 
 export type ConnectionAttributes = {
-  // nothing yet
+  assembly: string;
 };
 
 export class AssemblyGraph extends Graph<ComponentAttributes, ConnectionAttributes> {}

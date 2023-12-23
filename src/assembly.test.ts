@@ -28,23 +28,37 @@ describe('assembly', () => {
   describe('diagram', () => {
     it('should stack legos on top of each other', () => {
       const graph = new AssemblyGraph({ type: 'directed' });
-      graph.mergeEdge('a', 'b');
-      graph.mergeEdge('b', 'c');
-      graph.mergeEdge('c', 'd');
-      graph.mergeNode('a', {
+      graph.mergeEdge('spa', 'fetch', {
+        assembly: 'production',
+      });
+      graph.mergeEdge('fetch', 'http', {
+        assembly: 'production',
+      });
+      graph.mergeEdge('http', 'webserver', {
+        assembly: 'production',
+      });
+      graph.mergeEdge('webserver', 'fetchhandler', {
+        assembly: 'production',
+      });
+
+      graph.mergeNode('spa', {
         fill: 'orange',
       });
-      graph.mergeNode('b', {
+      graph.mergeNode('fetch', {
         fill: 'yellow',
         input: 'semicircle',
       });
-      graph.mergeNode('c', {
+      graph.mergeNode('http', {
         fill: 'pink',
         input: 'triangle',
       });
-      graph.mergeNode('d', {
+      graph.mergeNode('webserver', {
         fill: 'cyan',
         input: 'rectangle',
+      });
+      graph.mergeNode('fetchhandler', {
+        fill: 'lightgreen',
+        input: 'semicircle',
       });
       const stack = new StackedAssembly(graph);
 
