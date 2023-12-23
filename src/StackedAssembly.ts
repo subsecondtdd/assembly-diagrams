@@ -1,13 +1,13 @@
-import type Graph from 'graphology';
 import { topologicalSort } from 'graphology-dag';
 import type { Graphic } from 'svg-turtle';
 
 import {
   type ConnectorConstructor,
+  RectangleConnector,
   SemicircleConnector,
   StairsConnector,
-  TriangleConnector,
 } from './Connector';
+import type { AssemblyGraph } from './types';
 
 type StackedComponent = {
   name: string;
@@ -23,22 +23,24 @@ export class StackedAssembly {
   private readonly connectorPadding = (this.componentWidth - 4) / 2;
   private readonly components: StackedComponent[];
 
-  constructor(graph: Graph) {
+  constructor(graph: AssemblyGraph) {
     const componentNames = topologicalSort(graph);
     const connectors = [
       undefined,
-      TriangleConnector,
+      RectangleConnector,
       SemicircleConnector,
       StairsConnector,
       undefined,
     ];
-    const fills = ['pink', 'yellow', 'orange', 'cyan'];
-    this.components = componentNames.map((name, i) => ({
-      name,
-      fill: fills[i],
-      topConnector: connectors[i],
-      bottomConnector: connectors[i + 1],
-    }));
+    const components = componentNames.map((name, i) => {
+      return {
+        name,
+        fill: graph.getNodeAttribute(name, 'fill'),
+        topConnector: connectors[i],
+        bottomConnector: connectors[i + 1],
+      };
+    });
+    this.components = components;
   }
 
   draw(g: Graphic): Graphic {
