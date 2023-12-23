@@ -12,12 +12,13 @@ export type ConnectionAttributes<Assembly extends string> = {
   assembly: Assembly;
 };
 
-export type StackedComponent = {
+export type Component = {
   name: string;
   fill: string;
   topConnector: Connector | undefined;
   bottomConnector: Connector | undefined;
 };
+
 export class ComponentGraph<Assembly extends string> {
   private readonly graph = new Graph<ComponentAttributes, ConnectionAttributes<Assembly>>({
     type: 'directed',
@@ -50,10 +51,10 @@ export class ComponentGraph<Assembly extends string> {
    * Converts an assembly graph into an array of stacked components.
    * The result can be rendered with StackedAssembly
    */
-  toStackedComponents(assembly: Assembly): StackedComponent[] {
+  toStackedComponents(assembly: Assembly): Component[] {
     const assemblyGraph = this.toAssemblyGraph(assembly);
     const componentNames = topologicalSort(assemblyGraph);
-    const components: StackedComponent[] = componentNames.map((name) => {
+    const components: Component[] = componentNames.map((name) => {
       const { input: topConnector, fill } = assemblyGraph.getNodeAttributes(name);
 
       const outboundEdges = assemblyGraph.outboundEdges(name);
@@ -62,6 +63,11 @@ export class ComponentGraph<Assembly extends string> {
           `Unexpected state - node ${name} has ${outboundEdges.length} outbound edges`,
         );
       }
+      const inboundEdges = assemblyGraph.inboundEdges(name);
+      if (inboundEdges.length > 1) {
+        throw new Error(`Unexpected state - node ${name} has ${inboundEdges.length} inbound edges`);
+      }
+
       const { input: bottomConnector } =
         outboundEdges.length === 0
           ? { input: undefined }
@@ -77,9 +83,9 @@ export class ComponentGraph<Assembly extends string> {
   }
 
   /**
-   * Reduces a component graph to an assembly graph
-   * @param componentGraph the component graph
-   * @param params the assembly to filter on
+   * Reduces the graph to a smaller graph filtered on assembly
+   *
+   * @param assembly the assembly to filter on
    * @returns a concrete assembly graph
    */
   private toAssemblyGraph(assembly: Assembly): Graph {

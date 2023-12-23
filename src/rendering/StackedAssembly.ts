@@ -1,6 +1,6 @@
 import type { Graphic } from 'svg-turtle';
 
-import type { StackedComponent } from '../types';
+import type { Component } from '../ComponentGraph';
 import { getConnectorPathConstructor } from './ConnectorPath';
 
 type Params = {
@@ -12,7 +12,7 @@ type Params = {
 export class StackedAssembly {
   constructor(private readonly g: Graphic) {}
 
-  draw(components: readonly StackedComponent[], params: Params): Graphic {
+  draw(components: readonly Component[], params: Params): Graphic {
     const { unit, componentWidth, componentHeight } = params;
     const connectorPadding = (componentWidth - 4) / 2;
     const g = this.g;

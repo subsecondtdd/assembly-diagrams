@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest';
 
-import { ComponentGraph } from '../types';
+import { ComponentGraph } from '../ComponentGraph';
 
 describe('toStackedComponents', () => {
   it('filters on assembly', () => {

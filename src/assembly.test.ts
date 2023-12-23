@@ -3,8 +3,8 @@ import fs from 'node:fs';
 import { Graphic } from 'svg-turtle';
 import { describe, expect, it } from 'vitest';
 
+import { ComponentGraph } from './ComponentGraph';
 import { StackedAssembly } from './rendering/StackedAssembly';
-import { ComponentGraph } from './types';
 
 describe('assembly', () => {
   it('should be hexagonal when one node has more than 2 edges', () => {
@@ -64,17 +64,17 @@ describe('assembly', () => {
         input: 'semicircle',
       });
 
-      const components = componentGraph.toStackedComponents('production');
-      console.log({ components });
-
-      const stack = new StackedAssembly(new Graphic());
-      const g = stack.draw(components, {
+      const stackParams = {
         unit: 10,
         componentWidth: 16,
         componentHeight: 8,
-      });
-      const svg = g.asSVG('px');
-      fs.writeFileSync('assemblies/web.svg', svg);
+      };
+      fs.writeFileSync(
+        'assemblies/web.svg',
+        new StackedAssembly(new Graphic())
+          .draw(componentGraph.toStackedComponents('production'), stackParams)
+          .asSVG('px'),
+      );
     });
   });
 });
