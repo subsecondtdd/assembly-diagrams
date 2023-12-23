@@ -13,7 +13,7 @@ import { StackedAssemblyDiagram } from './rendering/StackedAssemblyDiagram';
 
 describe('ComponentGraph', () => {
   describe('.toHexagonalAssembly', () => {
-    it.only('creates a 3-connector hexagon', () => {
+    it('creates a 3-connector hexagon', () => {
       const componentGraph = new ComponentGraph<'production'>();
 
       componentGraph.mergeEdge('app', 'email', {
@@ -79,7 +79,6 @@ describe('ComponentGraph', () => {
       const svg = new HexagonalAssemblyDiagram(new Graphic())
         .draw(hexagonalAssembly, params)
         .asSVG('px');
-      console.log(svg);
 
       const path = `assemblies/ecommerce/hexagonal.svg`;
       fs.mkdirSync(dirname(path), { recursive: true });

@@ -13,7 +13,7 @@ export class HexagonalAssemblyDiagram {
   constructor(private readonly g: Graphic) {}
 
   draw(assembly: HexagonalAssembly, params: HexagonalAssemblyDiagramParams): Graphic {
-    const { unit, componentWidth } = params;
+    const { unit, componentWidth, componentHeight } = params;
     const edgePadding = componentWidth / 2;
     const connectorPadding = (componentWidth - 4) / 2;
     const g = this.g;
@@ -28,37 +28,60 @@ export class HexagonalAssemblyDiagram {
     g.beginPath({ Color: 'red', Width: 4 });
     g.turnRight(edgeAngle);
 
-    // Draw oubound
-    for (let i = 0; i < inOutEdgeCount; i++) {
-      g.draw(edgePadding * unit);
-      const component = outbound[i];
+    for (let i = 0; i < inOutEdgeCount * 2; i++) {
+      const outboundComponent = i < inOutEdgeCount;
+
+      const component = outboundComponent ? outbound[i] : inbound[i - inOutEdgeCount];
       if (component === undefined) {
-        g.draw(componentWidth * unit);
-      } else if (component.inbound !== null) {
-        const ConnectorPath = getConnectorPathConstructor(component.inbound);
-        new ConnectorPath(g).draw({ unit, protrude: 'out', pad: connectorPadding });
-      } else {
-        throw new Error(`No inbound connector for component ${JSON.stringify(component, null, 2)}`);
+        g.draw((edgePadding + componentWidth + edgePadding) * unit);
+        g.turnLeft(edgeAngle);
+        continue;
+      }
+      const connector = outboundComponent ? component.inbound : component.outbound;
+      if (connector === null) {
+        throw new Error(
+          `No ${
+            outboundComponent ? 'inbound' : 'outbound'
+          } connector for component ${JSON.stringify(component, null, 2)}`,
+        );
       }
       g.draw(edgePadding * unit);
-
+      const ConnectorPath = getConnectorPathConstructor(connector);
+      const protrude = outboundComponent ? 'out' : 'in';
+      new ConnectorPath(g).draw({ unit, protrude, pad: connectorPadding });
+      g.draw(edgePadding * unit);
       g.turnLeft(edgeAngle);
     }
 
-    // Draw inbound
-    for (let i = 0; i < inOutEdgeCount; i++) {
-      g.draw(edgePadding * unit);
-      const component = inbound[i];
+    for (let i = 0; i < inOutEdgeCount * 2; i++) {
+      const outboundComponent = i < inOutEdgeCount;
+      const component = outboundComponent ? outbound[i] : inbound[i - inOutEdgeCount];
       if (component === undefined) {
-        g.draw(componentWidth * unit);
-      } else if (component.outbound !== null) {
-        const ConnectorPath = getConnectorPathConstructor(component.outbound);
-        new ConnectorPath(g).draw({ unit, protrude: 'out', pad: connectorPadding });
-      } else {
-        throw new Error(`No inbound connector for component ${JSON.stringify(component, null, 2)}`);
+        g.move((edgePadding + componentWidth + edgePadding) * unit);
+        g.turnLeft(edgeAngle);
+        continue;
       }
-      g.draw(edgePadding * unit);
-
+      const connector = outboundComponent ? component.inbound : component.outbound;
+      if (connector === null) {
+        throw new Error(
+          `No ${
+            outboundComponent ? 'inbound' : 'outbound'
+          } connector for component ${JSON.stringify(component, null, 2)}`,
+        );
+      }
+      const ConnectorPath = getConnectorPathConstructor(connector);
+      g.move(edgePadding * unit);
+      g.turnRight(90);
+      g.draw(componentHeight * unit);
+      g.turnLeft(90);
+      g.draw(componentWidth * unit);
+      g.turnLeft(90);
+      g.draw(componentHeight * unit);
+      g.turnLeft(90);
+      const protrude = outboundComponent ? 'in' : 'out';
+      new ConnectorPath(g).draw({ unit, protrude, pad: connectorPadding });
+      g.turnLeft(180);
+      g.move((componentWidth + edgePadding) * unit);
       g.turnLeft(edgeAngle);
     }
 
