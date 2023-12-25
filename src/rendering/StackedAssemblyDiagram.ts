@@ -1,7 +1,7 @@
 import type { Graphic } from 'svg-turtle';
 
 import type { StackedAssembly } from '../ComponentGraph';
-import { getConnectorPathConstructor } from './ConnectorPath';
+import { ComponentRenderer } from './ComponentRenderer';
 
 export type StackedAssemblyDiagramParams = {
   unit: number;
@@ -21,26 +21,13 @@ export class StackedAssemblyDiagram {
       if (i > 0) {
         g.move(componentHeight * unit).turnLeft(90);
       }
-      const { outbound: bottomConnector, inbound: topConnector, fill } = assembly[i];
-      g.beginPath({ Fill: fill, Color: 'black', Width: 4 });
-
-      if (bottomConnector === null) {
-        g.draw(componentWidth * unit);
-      } else {
-        const ConnectorPath = getConnectorPathConstructor(bottomConnector);
-        new ConnectorPath(g).draw({ unit, protrude: 'in', pad: connectorPadding });
-      }
-      g.turnLeft(90);
-      g.draw(componentHeight * unit);
-      g.turnLeft(90);
-      if (topConnector === null) {
-        g.draw(componentWidth * unit);
-      } else {
-        const ConnectorPath = getConnectorPathConstructor(topConnector);
-        new ConnectorPath(g).draw({ unit, protrude: 'out', pad: connectorPadding });
-      }
-      g.turnLeft(90);
-      g.draw(componentHeight * unit);
+      const component = assembly[i];
+      new ComponentRenderer(g).draw(component, {
+        componentHeight,
+        componentWidth,
+        unit,
+        connectorPadding,
+      });
     }
     return g;
   }

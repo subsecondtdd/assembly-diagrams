@@ -28,6 +28,10 @@ describe('ComponentGraph', () => {
         connector: 'rectangle',
         assembly: 'production',
       });
+      componentGraph.mergeEdge('hypermedia-client', 'app', {
+        connector: 'stairs',
+        assembly: 'production',
+      });
       componentGraph.mergeNode('app', {
         fill: 'pink',
       });
@@ -40,6 +44,9 @@ describe('ComponentGraph', () => {
       componentGraph.mergeNode('api-client', {
         fill: 'green',
       });
+      componentGraph.mergeNode('hypermedia-client', {
+        fill: 'purple',
+      });
 
       const hexagonalAssembly = componentGraph.toHexagonalAssembly('production');
       const { inbound, outbound } = hexagonalAssembly;
@@ -50,6 +57,12 @@ describe('ComponentGraph', () => {
           inbound: null,
           fill: 'green',
           outbound: 'rectangle',
+        },
+        {
+          name: 'hypermedia-client',
+          inbound: null,
+          fill: 'purple',
+          outbound: 'stairs',
         },
       ];
       expect(inbound).toEqual(expectedInbound);

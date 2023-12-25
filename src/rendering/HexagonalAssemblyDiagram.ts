@@ -1,6 +1,7 @@
 import type { Graphic } from 'svg-turtle';
 
 import type { HexagonalAssembly } from '../ComponentGraph';
+import { ComponentRenderer } from './ComponentRenderer';
 import { getConnectorPathConstructor } from './ConnectorPath';
 
 export type HexagonalAssemblyDiagramParams = {
@@ -63,28 +64,34 @@ export class HexagonalAssemblyDiagram {
         g.turnLeft(edgeAngle);
         continue;
       }
-      const connector = outboundComponent ? component.inbound : component.outbound;
-      if (connector === null) {
-        throw new Error(
-          `No ${
-            outboundComponent ? 'inbound' : 'outbound'
-          } connector for component ${JSON.stringify(component, null, 2)}`,
-        );
-      }
-      g.beginPath({ Fill: component.fill, Color: 'black', Width: 4 });
-      const ConnectorPath = getConnectorPathConstructor(connector);
       g.move(edgePadding * unit);
-      g.turnRight(90);
-      g.draw(componentHeight * unit);
-      g.turnLeft(90);
-      g.draw(componentWidth * unit);
-      g.turnLeft(90);
-      g.draw(componentHeight * unit);
-      g.turnLeft(90);
-      const protrude = outboundComponent ? 'in' : 'out';
-      new ConnectorPath(g).draw({ unit, protrude, pad: connectorPadding });
-      g.turnLeft(180);
-      g.move((componentWidth + edgePadding) * unit);
+
+      if (outboundComponent) {
+        g.turnRight(90);
+        g.move(componentHeight * unit);
+        g.turnLeft(90);
+      } else {
+        g.move(componentWidth * unit);
+        g.turnLeft(180);
+      }
+
+      new ComponentRenderer(g).draw(component, {
+        componentHeight,
+        componentWidth,
+        unit,
+        connectorPadding,
+      });
+      if (outboundComponent) {
+        g.turnLeft(90);
+        g.move(componentWidth * unit);
+        g.turnLeft(90);
+        g.move(componentHeight * unit);
+        g.turnRight(90);
+      } else {
+        g.turnRight(90);
+      }
+
+      g.move(edgePadding * unit);
       g.turnLeft(edgeAngle);
     }
     return g;
