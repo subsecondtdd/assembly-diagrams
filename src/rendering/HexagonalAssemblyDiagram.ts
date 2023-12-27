@@ -18,7 +18,7 @@ export class HexagonalAssemblyDiagram {
     const connectorPadding = (componentWidth - 4) / 2;
     const g = this.g;
 
-    const { inbound, outbound } = assembly;
+    const { inboundComponents: inbound, outboundComponents: outbound } = assembly;
 
     const inOutEdgeCount = Math.max(3, inbound.length, outbound.length);
     const edgeAngle = 180 / inOutEdgeCount;
@@ -39,16 +39,16 @@ export class HexagonalAssemblyDiagram {
         g.turnLeft(edgeAngle);
         continue;
       }
-      const connector = outboundComponent ? component.inbound : component.outbound;
-      if (connector === null) {
+      const connectors = outboundComponent ? component.inbound : component.outbound;
+      if (connectors.length !== 1) {
         throw new Error(
-          `No ${
+          `Expected exactly 1 ${
             outboundComponent ? 'inbound' : 'outbound'
-          } connector for component ${JSON.stringify(component, null, 2)}`,
+          } connector count for component ${JSON.stringify(component, null, 2)}`,
         );
       }
       g.draw(edgePadding * unit);
-      const ConnectorPath = getConnectorPathConstructor(connector);
+      const ConnectorPath = getConnectorPathConstructor(connectors[0]);
       const protrude = outboundComponent ? 'out' : 'in';
       new ConnectorPath(g).draw({ unit, protrude, pad: connectorPadding });
       g.draw(edgePadding * unit);

@@ -4,7 +4,7 @@ import { dirname } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import type { Component, StackedAssembly } from './ComponentGraph';
-import { ComponentGraph } from './ComponentGraph';
+import { System } from './ComponentGraph';
 import type { HexagonalAssemblyDiagramParams } from './rendering/HexagonalAssemblyDiagram';
 import { HexagonalAssemblyDiagram } from './rendering/HexagonalAssemblyDiagram';
 import type { StackedAssemblyDiagramParams } from './rendering/StackedAssemblyDiagram';
@@ -14,55 +14,74 @@ import { Graphic } from './rendering/svg-turtle';
 describe('ComponentGraph', () => {
   describe('.toHexagonalAssembly', () => {
     it('creates a 3-connector hexagon', () => {
-      const componentGraph = new ComponentGraph<'production'>();
+      const componentGraph = new System<'production'>();
 
-      componentGraph.mergeEdge('app', 'email', {
-        connector: 'semicircle',
+      componentGraph.addConnection({
+        source: 'app',
+        target: 'email',
         assembly: 'production',
       });
-      componentGraph.mergeEdge('app', 'payment', {
-        connector: 'triangle',
+      componentGraph.addConnection({
+        source: 'app',
+        target: 'payment',
         assembly: 'production',
       });
-      componentGraph.mergeEdge('api-client', 'app', {
-        connector: 'rectangle',
+      componentGraph.addConnection({
+        source: 'api-client',
+        target: 'app',
         assembly: 'production',
       });
-      componentGraph.mergeEdge('hypermedia-client', 'app', {
-        connector: 'stairs',
+      componentGraph.addConnection({
+        source: 'hypermedia-client',
+        target: 'app',
         assembly: 'production',
       });
-      componentGraph.mergeNode('app', {
+      componentGraph.addComponent({
+        name: 'app',
         fill: 'pink',
+        inbound: [],
+        outbound: ['semicircle'],
       });
-      componentGraph.mergeNode('email', {
+      componentGraph.addComponent({
+        name: 'email',
         fill: 'red',
+        inbound: ['semicircle'],
+        outbound: [],
       });
-      componentGraph.mergeNode('payment', {
+      componentGraph.addComponent({
+        name: 'payment',
         fill: 'blue',
+        inbound: ['triangle'],
+        outbound: [],
       });
-      componentGraph.mergeNode('api-client', {
+      componentGraph.addComponent({
+        name: 'api-client',
         fill: 'green',
+        inbound: [],
+        outbound: ['rectangle'],
       });
-      componentGraph.mergeNode('hypermedia-client', {
+      componentGraph.addComponent({
+        name: 'hypermedia-client',
         fill: 'purple',
+        inbound: [],
+        outbound: ['stairs'],
       });
 
       const hexagonalAssembly = componentGraph.toHexagonalAssembly('production');
-      const { inbound, outbound } = hexagonalAssembly;
+      const { inboundComponents: inbound, outboundComponents: outbound } = hexagonalAssembly;
 
       const expectedInbound: Component[] = [
         {
           name: 'api-client',
-          inbound: null,
           fill: 'green',
-          outbound: 'rectangle',
+          inbound: [],
+          outbound: ['rectangle'],
         },
         {
           name: 'hypermedia-client',
-          inbound: null,
           fill: 'purple',
-          outbound: 'stairs',
+          inbound: [],
+          outbound: ['stairs'],
         },
       ];
       expect(inbound).toEqual(expectedInbound);
@@ -70,15 +89,15 @@ describe('ComponentGraph', () => {
       const expectedOutbound: Component[] = [
         {
           name: 'email',
-          inbound: 'semicircle',
           fill: 'red',
-          outbound: null,
+          inbound: ['semicircle'],
+          outbound: [],
         },
         {
           name: 'payment',
-          inbound: 'triangle',
           fill: 'blue',
-          outbound: null,
+          inbound: ['triangle'],
+          outbound: [],
         },
       ];
       expect(outbound).toEqual(expectedOutbound);
@@ -101,39 +120,50 @@ describe('ComponentGraph', () => {
 
   describe('.toStackedComponents', () => {
     it('filters on assembly', () => {
-      const componentGraph = new ComponentGraph();
+      const componentGraph = new System();
 
-      componentGraph.mergeEdge('a', 'b', {
-        connector: 'semicircle',
+      componentGraph.addConnection({
+        source: 'a',
+        target: 'b',
         assembly: 'production',
       });
-      componentGraph.mergeEdge('a', 'c', {
-        connector: 'semicircle',
+      componentGraph.addConnection({
+        source: 'a',
+        target: 'c',
         assembly: 'test',
       });
-      componentGraph.mergeNode('a', {
+      componentGraph.addComponent({
+        name: 'a',
         fill: 'red',
+        inbound: [],
+        outbound: ['semicircle'],
       });
-      componentGraph.mergeNode('b', {
+      componentGraph.addComponent({
+        name: 'b',
         fill: 'blue',
+        inbound: ['semicircle'],
+        outbound: [],
       });
-      componentGraph.mergeNode('c', {
+      componentGraph.addComponent({
+        name: 'c',
         fill: 'green',
+        inbound: ['semicircle'],
+        outbound: [],
       });
 
       const components = componentGraph.toStackedAssembly('test');
       const expected: StackedAssembly = [
         {
           name: 'a',
-          inbound: null,
           fill: 'red',
-          outbound: 'semicircle',
+          inbound: [],
+          outbound: ['semicircle'],
         },
         {
           name: 'c',
-          inbound: 'semicircle',
           fill: 'green',
-          outbound: null,
+          inbound: ['semicircle'],
+          outbound: [],
         },
       ];
       expect(components).toEqual(expected);
@@ -144,42 +174,62 @@ describe('ComponentGraph', () => {
         const assemblies = ['production', 'tdd'] as const;
         type Assembly = (typeof assemblies)[number];
 
-        const componentGraph = new ComponentGraph<Assembly>();
-        componentGraph.mergeEdge('spa', 'fetch', {
-          connector: 'semicircle',
+        const componentGraph = new System<Assembly>();
+        componentGraph.addConnection({
+          source: 'spa',
+          target: 'fetch',
           assembly: 'production',
         });
-        componentGraph.mergeEdge('fetch', 'http', {
-          connector: 'triangle',
+        componentGraph.addConnection({
+          source: 'fetch',
+          target: 'http',
           assembly: 'production',
         });
-        componentGraph.mergeEdge('http', 'webserver', {
-          connector: 'rectangle',
+        componentGraph.addConnection({
+          source: 'http',
+          target: 'webserver',
           assembly: 'production',
         });
-        componentGraph.mergeEdge('webserver', 'fetchhandler', {
-          connector: 'stairs',
+        componentGraph.addConnection({
+          source: 'webserver',
+          target: 'fetchhandler',
           assembly: 'production',
         });
-        componentGraph.mergeEdge('spa', 'fetchhandler', {
-          connector: 'semicircle',
+        componentGraph.addConnection({
+          source: 'spa',
+          target: 'fetchhandler',
           assembly: 'tdd',
         });
 
-        componentGraph.mergeNode('spa', {
+        componentGraph.addComponent({
+          name: 'spa',
           fill: 'orange',
+          inbound: [],
+          outbound: ['semicircle'],
         });
-        componentGraph.mergeNode('fetch', {
+        componentGraph.addComponent({
+          name: 'fetch',
           fill: 'yellow',
+          inbound: ['semicircle'],
+          outbound: ['triangle'],
         });
-        componentGraph.mergeNode('http', {
+        componentGraph.addComponent({
+          name: 'http',
           fill: 'pink',
+          inbound: ['triangle'],
+          outbound: ['rectangle'],
         });
-        componentGraph.mergeNode('webserver', {
+        componentGraph.addComponent({
+          name: 'webserver',
           fill: 'cyan',
+          inbound: ['rectangle'],
+          outbound: ['semicircle'],
         });
-        componentGraph.mergeNode('fetchhandler', {
+        componentGraph.addComponent({
+          name: 'fetchhandler',
           fill: 'lightgreen',
+          inbound: ['semicircle'],
+          outbound: [],
         });
 
         const params: StackedAssemblyDiagramParams = {
@@ -200,24 +250,4 @@ describe('ComponentGraph', () => {
       });
     });
   });
-
-  // describe('.hexagon', () => {
-  //   it('returns the hexagon node when one node has more than 2 edges', () => {
-  //     const componentGraph = new ComponentGraph();
-  //     componentGraph.mergeEdge('a', 'hex');
-  //     componentGraph.mergeEdge('b', 'hex');
-  //     componentGraph.mergeEdge('hex', 'x');
-
-  //     expect(componentGraph.hexagon()).toBe('hex');
-  //   });
-
-  //   it('returns null when no node has more than 2 edges', () => {
-  //     const componentGraph = new ComponentGraph();
-  //     componentGraph.mergeEdge('a', 'b');
-  //     componentGraph.mergeEdge('b', 'c');
-  //     componentGraph.mergeEdge('c', 'a');
-
-  //     expect(componentGraph.hexagon()).toBe(null);
-  //   });
-  // });
 });

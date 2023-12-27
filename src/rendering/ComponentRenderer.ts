@@ -20,20 +20,24 @@ export class ComponentRenderer {
     const { outbound, inbound, fill } = component;
     g.beginPath({ Fill: fill, Color: 'black', Width: 4 });
 
-    if (outbound === null) {
+    if (outbound.length === 0) {
       g.draw(componentWidth * unit);
-    } else {
-      const ConnectorPath = getConnectorPathConstructor(outbound);
+    } else if (outbound.length === 1) {
+      const ConnectorPath = getConnectorPathConstructor(outbound[0]);
       new ConnectorPath(g).draw({ unit, protrude: 'out', pad: connectorPadding });
+    } else {
+      throw new Error(`Component ${component.name} has more than one outbound connector`);
     }
     g.turnLeft(90);
     g.draw(componentHeight * unit);
     g.turnLeft(90);
-    if (inbound === null) {
+    if (inbound.length === 0) {
       g.draw(componentWidth * unit);
-    } else {
-      const ConnectorPath = getConnectorPathConstructor(inbound);
+    } else if (inbound.length === 1) {
+      const ConnectorPath = getConnectorPathConstructor(inbound[0]);
       new ConnectorPath(g).draw({ unit, protrude: 'in', pad: connectorPadding });
+    } else {
+      throw new Error(`Component ${component.name} has more than one inbound connector`);
     }
     g.turnLeft(90);
     g.draw(componentHeight * unit);
