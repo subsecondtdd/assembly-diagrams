@@ -1,7 +1,6 @@
-import type { Graphic } from 'svg-turtle';
-
 import type { Component } from '../ComponentGraph';
 import { getConnectorPathConstructor } from './ConnectorPath';
+import type { Graphic } from './svg-turtle';
 
 export type ComponentRendererParams = {
   unit: number;

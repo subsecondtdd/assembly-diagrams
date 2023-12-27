@@ -1,7 +1,6 @@
 import fs from 'node:fs';
 import { dirname } from 'node:path';
 
-import { Graphic } from 'svg-turtle';
 import { describe, expect, it } from 'vitest';
 
 import type { Component, StackedAssembly } from './ComponentGraph';
@@ -10,6 +9,7 @@ import type { HexagonalAssemblyDiagramParams } from './rendering/HexagonalAssemb
 import { HexagonalAssemblyDiagram } from './rendering/HexagonalAssemblyDiagram';
 import type { StackedAssemblyDiagramParams } from './rendering/StackedAssemblyDiagram';
 import { StackedAssemblyDiagram } from './rendering/StackedAssemblyDiagram';
+import { Graphic } from './rendering/svg-turtle';
 
 describe('ComponentGraph', () => {
   describe('.toHexagonalAssembly', () => {

@@ -1,7 +1,6 @@
-import type { Graphic } from 'svg-turtle';
-
 import type { StackedAssembly } from '../ComponentGraph';
 import { ComponentRenderer } from './ComponentRenderer';
+import type { Graphic } from './svg-turtle';
 
 export type StackedAssemblyDiagramParams = {
   unit: number;

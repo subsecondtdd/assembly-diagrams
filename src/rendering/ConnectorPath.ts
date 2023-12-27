@@ -1,6 +1,5 @@
-import type { Graphic } from 'svg-turtle';
-
 import type { Connector } from '../ComponentGraph';
+import type { Graphic } from './svg-turtle';
 
 type Protrude = 'in' | 'out';
 type Curve = 'curveLeft' | 'curveRight';

@@ -1,8 +1,7 @@
-import type { Graphic } from 'svg-turtle';
-
 import type { HexagonalAssembly } from '../ComponentGraph';
 import { ComponentRenderer } from './ComponentRenderer';
 import { getConnectorPathConstructor } from './ConnectorPath';
+import type { Graphic } from './svg-turtle';
 
 export type HexagonalAssemblyDiagramParams = {
   unit: number;
