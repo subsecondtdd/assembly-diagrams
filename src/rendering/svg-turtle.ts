@@ -105,7 +105,28 @@ export class Graphic {
     return this;
   }
 
-  /**** beginPath ****/
+  public text(Text: string): Graphic {
+    if (this.currentPath != null) {
+      this.endPath();
+    }
+
+    this._initialize();
+
+    this.SVGContent +=
+      `<text font-size="1.2em" transform="rotate(${this.currentDirection}, ${rounded(
+        this.currentX,
+      )}, ${rounded(this.currentY)})" dominant-baseline="middle" text-anchor="middle" x="` +
+      rounded(this.currentX) +
+      '" y="' +
+      rounded(this.currentY) +
+      '">';
+
+    this.SVGContent += Text;
+
+    this.SVGContent += '</text>';
+
+    return this;
+  }
 
   public beginPath(PathOptionSet?: TUR_PathOptionSet): Graphic {
     // allowPathOptionSet('option set',PathOptionSet)

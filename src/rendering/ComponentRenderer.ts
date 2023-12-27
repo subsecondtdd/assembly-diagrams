@@ -37,5 +37,18 @@ export class ComponentRenderer {
     }
     g.turnLeft(90);
     g.draw(componentHeight * unit);
+
+    g.turnLeft(180);
+    g.move((componentHeight / 2) * unit);
+    g.turnRight(90);
+    g.move((componentWidth / 2) * unit);
+    // text
+
+    g.text(component.name);
+
+    g.turnLeft(180);
+    g.move((componentWidth / 2) * unit);
+    g.turnLeft(90);
+    g.move((componentHeight / 2) * unit);
   }
 }
