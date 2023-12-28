@@ -74,10 +74,52 @@ export class System<Assembly extends string> {
   toStackedAssembly(assembly: Assembly): StackedAssembly {
     const assemblyGraph = this.toAssemblyGraph(assembly);
     const componentNames = topologicalSort(assemblyGraph);
-    return componentNames.map((name) => ({
-      name,
-      ...assemblyGraph.getNodeAttributes(name),
-    }));
+    let previousComponent: Component | undefined = undefined;
+    return componentNames.map((name) => {
+      const { inbound, outbound, fill } = assemblyGraph.getNodeAttributes(name);
+      if (inbound === undefined) {
+        throw new Error(`Component ${name} is missing the inbound attribute. Is it defined?`);
+      }
+      if (outbound === undefined) {
+        throw new Error(`Component ${name} is missing the outbound attribute. Is it defined?`);
+      }
+      if (fill === undefined) {
+        throw new Error(`Component ${name} is missing the fill attribute. Is it defined?`);
+      }
+      if (inbound.length > 1) {
+        throw new Error(`Component ${name} has more than one inbound connector: ${inbound}`);
+      }
+      if (outbound.length > 1) {
+        throw new Error(`Component ${name} has more than one outbound connector: ${outbound}`);
+      }
+      if (previousComponent !== undefined) {
+        // Check that the outbound connector of the previous component matches the inbound connector of this component
+        const previousOutboundConnector = previousComponent.outbound[0];
+        if (previousOutboundConnector === undefined) {
+          throw new Error(`Component ${previousComponent.name} has no outbound connector`);
+        }
+        const inboundConnector = inbound[0];
+        if (inboundConnector === undefined) {
+          throw new Error(`Component ${name} has no inbound connector`);
+        }
+        if (previousOutboundConnector !== inboundConnector) {
+          throw new Error(
+            `Component ${previousComponent.name}--${previousOutboundConnector}--> is incompatible with --${inboundConnector}-->${name}`,
+          );
+        }
+      }
+
+      const component = {
+        name,
+        inbound,
+        outbound,
+        fill,
+      };
+
+      previousComponent = component;
+
+      return component;
+    });
   }
 
   /**

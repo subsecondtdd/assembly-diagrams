@@ -11,63 +11,63 @@ import type { StackedAssemblyDiagramParams } from './rendering/StackedAssemblyDi
 import { StackedAssemblyDiagram } from './rendering/StackedAssemblyDiagram';
 import { Graphic } from './rendering/svg-turtle';
 
-describe('ComponentGraph', () => {
+describe('System', () => {
   describe('.toHexagonalAssembly', () => {
     it('creates a 3-connector hexagon', () => {
-      const componentGraph = new System<'production'>();
+      const system = new System<'production'>();
 
-      componentGraph.addConnection({
+      system.addConnection({
         source: 'app',
         target: 'email',
         assembly: 'production',
       });
-      componentGraph.addConnection({
+      system.addConnection({
         source: 'app',
         target: 'payment',
         assembly: 'production',
       });
-      componentGraph.addConnection({
+      system.addConnection({
         source: 'api-client',
         target: 'app',
         assembly: 'production',
       });
-      componentGraph.addConnection({
+      system.addConnection({
         source: 'hypermedia-client',
         target: 'app',
         assembly: 'production',
       });
-      componentGraph.addComponent({
+      system.addComponent({
         name: 'app',
         fill: 'pink',
         inbound: [],
         outbound: ['semicircle'],
       });
-      componentGraph.addComponent({
+      system.addComponent({
         name: 'email',
         fill: 'red',
         inbound: ['semicircle'],
         outbound: [],
       });
-      componentGraph.addComponent({
+      system.addComponent({
         name: 'payment',
         fill: 'blue',
         inbound: ['triangle'],
         outbound: [],
       });
-      componentGraph.addComponent({
+      system.addComponent({
         name: 'api-client',
         fill: 'green',
         inbound: [],
         outbound: ['rectangle'],
       });
-      componentGraph.addComponent({
+      system.addComponent({
         name: 'hypermedia-client',
         fill: 'purple',
         inbound: [],
         outbound: ['stairs'],
       });
 
-      const hexagonalAssembly = componentGraph.toHexagonalAssembly('production');
+      const hexagonalAssembly = system.toHexagonalAssembly('production');
       const { inboundComponents: inbound, outboundComponents: outbound } = hexagonalAssembly;
 
       const expectedInbound: Component[] = [
@@ -119,39 +119,80 @@ describe('ComponentGraph', () => {
   });
 
   describe('.toStackedComponents', () => {
-    it('filters on assembly', () => {
-      const componentGraph = new System();
+    it('fails when a component is not defined', () => {
+      const system = new System<'production'>();
 
-      componentGraph.addConnection({
+      system.addConnection({
         source: 'a',
         target: 'b',
         assembly: 'production',
       });
-      componentGraph.addConnection({
+
+      expect(() => system.toStackedAssembly('production')).toThrow(
+        'Component a is missing the inbound attribute. Is it defined?',
+      );
+    });
+
+    it('fails when two adjacent components have incompatible connectors', () => {
+      const system = new System<'production'>();
+
+      system.addConnection({
         source: 'a',
-        target: 'c',
-        assembly: 'test',
+        target: 'b',
+        assembly: 'production',
       });
-      componentGraph.addComponent({
+
+      system.addComponent({
         name: 'a',
         fill: 'red',
         inbound: [],
         outbound: ['semicircle'],
       });
-      componentGraph.addComponent({
+      system.addComponent({
+        name: 'b',
+        fill: 'blue',
+        inbound: ['triangle'],
+        outbound: [],
+      });
+
+      expect(() => system.toStackedAssembly('production')).toThrow(
+        'Component a--semicircle--> is incompatible with --triangle-->b',
+      );
+    });
+
+    it('filters on assembly', () => {
+      const system = new System();
+
+      system.addConnection({
+        source: 'a',
+        target: 'b',
+        assembly: 'production',
+      });
+      system.addConnection({
+        source: 'a',
+        target: 'c',
+        assembly: 'test',
+      });
+      system.addComponent({
+        name: 'a',
+        fill: 'red',
+        inbound: [],
+        outbound: ['semicircle'],
+      });
+      system.addComponent({
         name: 'b',
         fill: 'blue',
         inbound: ['semicircle'],
         outbound: [],
       });
-      componentGraph.addComponent({
+      system.addComponent({
         name: 'c',
         fill: 'green',
         inbound: ['semicircle'],
         outbound: [],
       });
 
-      const components = componentGraph.toStackedAssembly('test');
+      const components = system.toStackedAssembly('test');
       const expected: StackedAssembly = [
         {
           name: 'a',
@@ -174,58 +215,58 @@ describe('ComponentGraph', () => {
         const assemblies = ['production', 'tdd'] as const;
         type Assembly = (typeof assemblies)[number];
 
-        const componentGraph = new System<Assembly>();
-        componentGraph.addConnection({
+        const system = new System<Assembly>();
+        system.addConnection({
           source: 'spa',
           target: 'fetch',
           assembly: 'production',
         });
-        componentGraph.addConnection({
+        system.addConnection({
           source: 'fetch',
           target: 'http',
           assembly: 'production',
         });
-        componentGraph.addConnection({
+        system.addConnection({
           source: 'http',
           target: 'webserver',
           assembly: 'production',
         });
-        componentGraph.addConnection({
+        system.addConnection({
           source: 'webserver',
           target: 'fetchhandler',
           assembly: 'production',
         });
-        componentGraph.addConnection({
+        system.addConnection({
           source: 'spa',
           target: 'fetchhandler',
           assembly: 'tdd',
         });
 
-        componentGraph.addComponent({
+        system.addComponent({
           name: 'spa',
           fill: 'orange',
           inbound: [],
           outbound: ['semicircle'],
         });
-        componentGraph.addComponent({
+        system.addComponent({
           name: 'fetch',
           fill: 'yellow',
           inbound: ['semicircle'],
           outbound: ['triangle'],
         });
-        componentGraph.addComponent({
+        system.addComponent({
           name: 'http',
           fill: 'pink',
           inbound: ['triangle'],
           outbound: ['rectangle'],
         });
-        componentGraph.addComponent({
+        system.addComponent({
           name: 'webserver',
           fill: 'cyan',
           inbound: ['rectangle'],
           outbound: ['semicircle'],
         });
-        componentGraph.addComponent({
+        system.addComponent({
           name: 'fetchhandler',
           fill: 'lightgreen',
           inbound: ['semicircle'],
@@ -239,7 +280,7 @@ describe('ComponentGraph', () => {
         };
 
         for (const assembly of assemblies) {
-          const productionAssembly = componentGraph.toStackedAssembly(assembly);
+          const productionAssembly = system.toStackedAssembly(assembly);
           const path = `assemblies/web/${assembly}.svg`;
           fs.mkdirSync(dirname(path), { recursive: true });
           fs.writeFileSync(
